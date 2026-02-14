@@ -1,0 +1,20 @@
+{
+  "servers": [
+    {
+      "alias": "P5 Primary",
+      "host": "p5-primary.local",
+      "port": "8000",
+      "username": "admin",
+      "apiVersion": "v1",
+      "useHTTPS": false
+    },
+    {
+      "alias": "P5 DR",
+      "host": "10.20.30.40",
+      "port": "8000",
+      "username": "admin",
+      "apiVersion": "v1",
+      "useHTTPS": false
+    }
+  ]
+}
