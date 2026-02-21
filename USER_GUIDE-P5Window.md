@@ -75,8 +75,6 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 ### Auto-detection at launch
 Place `P5Servers.json` (or `P5HealthCheckServers.json`) in `/Users/Shared/` or `~/Documents/` and the app imports new servers automatically on next launch.
 
-See [`README-servers-feature.md`](../README-servers-feature.md) for the full format reference and cross-app workflow.
-
 ## Tips
 - Increase `Max volume details` (in Settings) when you need broader volume coverage.
 - Set `Warning job lookback (days)` (in Settings) to widen or narrow the job history window.
