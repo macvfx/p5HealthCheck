@@ -1,8 +1,8 @@
 # P5 Health Check CLI (macOS) User Guide
 
 ## Files
-- Script: `scripts/p5_health_check.sh`
-- Sample server config: `Documents/P5HealthCheckServers.example.json`
+- Script: `p5_health_check.sh`
+- Sample server config: `P5HealthCheckServers.example.json`
 
 ## What it does
 - Checks one P5 server per run (non-interactive) or prompts to check additional servers (interactive).
@@ -34,29 +34,29 @@ Run from Terminal:
 
 ```bash
 chmod +x scripts/p5_health_check.sh
-./scripts/p5_health_check.sh
+.p5_health_check.sh
 ```
 
 Common options:
 
 ```bash
 # Non-interactive run using shared server config
-./scripts/p5_health_check.sh -n -c "/Users/Shared/P5Servers.json"
+.p5_health_check.sh -n -c "/Users/Shared/P5Servers.json"
 
 # Save reports to a specific folder
-./scripts/p5_health_check.sh -o "./p5-reports"
+.p5_health_check.sh -o "./p5-reports"
 
 # Wider job lookback and more volume records
-./scripts/p5_health_check.sh -l 14 -m 1000
+.p5_health_check.sh -l 14 -m 1000
 
 # Use Keychain password in interactive mode
-./scripts/p5_health_check.sh -K
+.p5_health_check.sh -K
 
 # Force password prompt (ignores Keychain and hardcoded values)
-./scripts/p5_health_check.sh -p
+.p5_health_check.sh -p
 
 # Full non-interactive run with custom config and output path
-./scripts/p5_health_check.sh -n -c "/Users/Shared/P5Servers.json" -o "./p5-reports"
+.p5_health_check.sh -n -c "/Users/Shared/P5Servers.json" -o "./p5-reports"
 ```
 
 ## Option Reference
@@ -172,7 +172,7 @@ To run on a schedule without cron, create a launchd plist:
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/Shared/scripts/p5_health_check.sh</string>
+        <string>/Users/Sharedp5_health_check.sh</string>
         <!-- Replace the path above with the actual absolute path to p5_health_check.sh on your system -->
         <string>-n</string>
         <string>-c</string>
