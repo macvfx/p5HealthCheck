@@ -224,4 +224,3 @@ Accept:    application/json
 ---
 
 *Document based on P5 Health Check v1.0 (build 2) and P5 REST API v7.1.0+*
-*Source files: `HealthMonitor.swift`, `P5APIClient.swift`, `P5_openapi.json`, `P5 rest API example.json`*
