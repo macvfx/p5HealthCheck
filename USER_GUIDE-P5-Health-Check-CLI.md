@@ -1,135 +1,199 @@
 # P5 Health Check CLI (macOS) User Guide
 
 ## Files
-- Script: `p5_health_check.sh`
-- Sample server config: `P5HealthCheck-CLI-servers.example.json`
+- Script: `scripts/p5_health_check.sh`
+- Sample server config: `Documents/P5HealthCheckServers.example.json`
 
 ## What it does
-- Checks one P5 server at a time.
-- Prompts to check another server after each run.
-- Supports selecting which checks to run (`1-5` or `all`).
-- Prompts for credentials when not hardcoded.
-- Can read/save passwords in macOS Keychain.
-- Creates:
-  - JSON summary report
-  - Volumes CSV
-  - Warning jobs CSV
-  - Error jobs CSV
+- Checks one P5 server per run (non-interactive) or prompts to check additional servers (interactive).
+- Runs up to 7 checks — all enabled by default in non-interactive mode.
+- Reads credentials from macOS Keychain (or prompts interactively).
+- Outputs per-run files to the current directory (or a specified output path).
 
 ## Checks
 1. Server info + uptime
 2. Devices (cleaning needed)
 3. Job warnings
 4. Job errors
-5. Volumes + mode counts + CSV
+5. Volumes + mode counts + CSV (Appendable / Readonly / Full, with Last Used, Use Count, Error Count)
+6. Jukeboxes (slot count and volumes loaded per library) — non-fatal if unavailable
+7. Licence resources — prints `[ALERT]` for depleted (`free = 0`), `[WARN]` for low (`free ≤ 2`); non-fatal if unavailable
 
-## Output
-- Default output directory: current working directory.
-- Optional output directory: pass `-o /path/to/output`.
+## Output files
+Default output directory: current working directory. Override with `-o DIR`.
 
-File naming format:
-- `<server-alias>-YYYYMMDD-HHMMSS-report.json`
-- `<server-alias>-YYYYMMDD-HHMMSS-volumes.csv`
-- `<server-alias>-YYYYMMDD-HHMMSS-warnings.csv`
-- `<server-alias>-YYYYMMDD-HHMMSS-errors.csv`
+| File | Contents |
+|---|---|
+| `<alias>-YYYYMMDD-HHMMSS-report.json` | Full structured report for all checks |
+| `<alias>-YYYYMMDD-HHMMSS-volumes.csv` | Volume list with Last Used, Use Count, Error Count |
+| `<alias>-YYYYMMDD-HHMMSS-warnings.csv` | Warning jobs |
+| `<alias>-YYYYMMDD-HHMMSS-errors.csv` | Error jobs |
 
 ## Usage
 Run from Terminal:
 
 ```bash
-cd "/Users/username/Downloads/"
-chmod +x p5_health_check.sh
+chmod +x scripts/p5_health_check.sh
 ./scripts/p5_health_check.sh
 ```
 
 Common options:
 
 ```bash
-./scripts/p5_health_check.sh -o "/Users/username/Desktop/p5-reports"
-./scripts/p5_health_check.sh -c "/Users/Shared/P5HealthCheckServers.json"
-./scripts/p5_health_check.sh -l 7 -m 500
-./scripts/p5_health_check.sh -k
-```
+# Non-interactive run using shared server config
+./scripts/p5_health_check.sh -n -c "/Users/Shared/P5Servers.json"
 
-## CLI Option Examples
+# Save reports to a specific folder
+./scripts/p5_health_check.sh -o "./p5-reports"
 
-```bash
-./scripts/p5_health_check.sh -o "/Users/username/Desktop/p5-reports"
-./scripts/p5_health_check.sh -c "/Users/Shared/P5HealthCheckServers.json"
-./scripts/p5_health_check.sh -l 7 -m 500
-./scripts/p5_health_check.sh -k
+# Wider job lookback and more volume records
+./scripts/p5_health_check.sh -l 14 -m 1000
+
+# Use Keychain password in interactive mode
 ./scripts/p5_health_check.sh -K
-./scripts/p5_health_check.sh -n -c "/Users/Shared/P5HealthCheckServers.json" -o "/Users/username/Desktop/p5-reports"
+
+# Force password prompt (ignores Keychain and hardcoded values)
 ./scripts/p5_health_check.sh -p
-./scripts/p5_health_check.sh -c "/Users/Shared/P5HealthCheckServers.json" -U "myuser" -p
+
+# Full non-interactive run with custom config and output path
+./scripts/p5_health_check.sh -n -c "/Users/Shared/P5Servers.json" -o "./p5-reports"
 ```
 
 ## Option Reference
-- `-o DIR`: Output directory for generated files. Default is the current working directory.
-- `-c FILE`: Server config JSON path. If omitted, script uses `/Users/Shared/P5HealthCheckServers.json` when that file exists.
-- `-l N`: Warning/error job lookback window in days. Default is `7`.
-- `-m N`: Maximum number of volume detail records to fetch. Default is `500`; use `0` for unlimited.
-- `-k`: Allow insecure TLS (`curl -k`) for environments with self-signed or untrusted certificates.
-- `-n`: Non-interactive mode. Runs once, executes all checks, and does not prompt.
-- `-p`: Force password prompt for this run and ignore both Keychain and hardcoded password values.
-- `-K`: In interactive mode, try Keychain password before prompting.
-- `-U NAME`: Override username for this run (useful when config username is outdated).
-- `-A AUTH`: Override auth as raw `user:pass` for this run. Use only for troubleshooting with non-secret test credentials, because command-line arguments are stored in shell history.
-- `-h`: Print help/usage and exit.
 
-## Non-Interactive Mode
-- Use `-n` to run once without prompts.
-- In `-n` mode, script runs all checks automatically.
-- Server selection in `-n` mode:
-  - uses hardcoded values if set in script
-  - otherwise uses the first server from `-c` config file (or default `/Users/Shared/P5HealthCheckServers.json` if present)
-- Password in `-n` mode:
-  - uses `HARDCODED_PASSWORD` if set
-  - otherwise reads from Keychain
-  - if missing, script exits with an error (no password prompt in `-n` mode)
+| Option | Description |
+|---|---|
+| `-o DIR` | Output directory for generated files. Default: current working directory. |
+| `-c FILE` | Server config JSON path. Default: `/Users/Shared/P5Servers.json` (if present). |
+| `-l N` | Job lookback window in days. Default: `7`. |
+| `-m N` | Max volume detail records to fetch. Default: `500`. Use `0` for unlimited. |
+| `-n` | Non-interactive mode — runs once, all 7 checks, no prompts. |
+| `-k` | Allow insecure TLS (`curl -k`) for self-signed certificates. |
+| `-K` | Try Keychain password before prompting (interactive mode). |
+| `-p` | Force password prompt — ignores Keychain and hardcoded values. |
+| `-U NAME` | Override username for this run. |
+| `-A AUTH` | Override auth as `user:pass` (use only for non-secret test credentials — stored in shell history). |
+| `-h` | Print help and exit. |
 
-## Config file format
-- Supported JSON shapes:
-  - `{ "servers": [ ... ] }`
-  - `[ ... ]`
-- Per server fields:
-  - `alias` (required)
-  - `host` (required)
-  - `port` (optional, default `8000`)
-  - `username` (optional, default `admin`)
-  - `apiVersion` (optional, default `v1`)
-  - `useHTTPS` (optional, default `false`)
+## Server Config JSON
 
-## Keychain behavior
-- Service name used by script: `com.p5healthcheck.shell`
+The script uses the same JSON format as the Mac apps. Default filename is `P5Servers.json`.
+
+**Default search path (no `-c` flag):**
+1. `/Users/Shared/P5Servers.json`
+2. `/Users/Shared/P5HealthCheckServers.json`
+3. `~/Documents/P5Servers.json`
+4. `~/Documents/P5HealthCheckServers.json`
+
+**Format** (`{ "servers": [ ... ] }` or `[ ... ]`):
+
+```json
+{
+  "servers": [
+    {
+      "alias": "P5 Primary",
+      "host": "p5-primary.local",
+      "port": "8000",
+      "username": "admin",
+      "apiVersion": "v1",
+      "useHTTPS": false
+    },
+    {
+      "alias": "P5 DR",
+      "host": "10.20.30.40",
+      "port": "8000",
+      "username": "admin",
+      "apiVersion": "v1",
+      "useHTTPS": false
+    }
+  ]
+}
+```
+
+Per-server fields:
+
+| Field | Required | Default |
+|---|---|---|
+| `alias` | Yes | — |
+| `host` | Yes | — |
+| `port` | No | `8000` |
+| `username` | No | `admin` |
+| `apiVersion` | No | `v1` |
+| `useHTTPS` | No | `false` |
+
+Passwords are never stored in the file. The script reads them from Keychain or prompts interactively.
+
+## Non-Interactive Mode (`-n`)
+- Runs once without any prompts.
+- All 7 checks run automatically.
+- Server selection: uses hardcoded values if set in script, otherwise uses the first server from the config file.
+- Password: uses `HARDCODED_PASSWORD` if set, otherwise reads from Keychain. If missing, exits with an error.
+
+## Keychain Behaviour
+- Service name: `com.p5healthcheck.shell`
 - Account key format: `username@host:port/rest/apiVersion`
-- If no hardcoded password is present:
-  - interactive mode first prompts for raw credentials as `user:pass` (recommended)
-  - if skipped, prompts for password-only
-  - optional `-K` makes script try Keychain first in interactive mode
-  - non-interactive mode (`-n`) uses Keychain/hardcoded values only
-  - offers to save password to Keychain
+- In interactive mode: prompts for credentials, then offers to save to Keychain.
+- Use `-K` to try Keychain first before prompting.
+- In non-interactive mode (`-n`): uses Keychain or hardcoded values only — no prompts.
 
 ## Secure Credential Entry (Recommended)
-- To keep secrets out of shell history, run with `-p` and enter credentials at the hidden prompt.
-- At prompt `Credentials as user:pass (recommended, Enter to skip):` enter exactly:
-  - `username:password`
-- Include the colon between username and password.
-- Do not add quotes at the prompt.
+To keep passwords out of shell history:
+1. Run with `-p` to force the hidden credential prompt.
+2. At `Credentials as user:pass (recommended, Enter to skip):` enter `username:password` including the colon.
+3. Do not add quotes at the prompt.
 
-## `-A` Safety Note
-- `-A "username:password"` places credentials in shell history and process arguments.
-- Use `-A` only for testing/troubleshooting and only with non-secret account info.
-- Prefer `-p` with hidden interactive entry for real credentials.
+Avoid `-A "username:password"` for real credentials — command-line arguments are visible in process listings and shell history.
 
-## Hardcoded credentials (optional)
-Edit the top of the script and set:
-- `HARDCODED_ALIAS`
-- `HARDCODED_HOST`
-- `HARDCODED_PORT`
-- `HARDCODED_USERNAME`
-- `HARDCODED_PASSWORD`
-- `HARDCODED_API_VERSION`
-- `HARDCODED_USE_HTTPS`
+## Hardcoded Credentials (Optional)
+Edit the top of the script to set static values (useful for dedicated monitoring accounts):
 
-If fields are blank, the script prompts interactively.
+```bash
+HARDCODED_ALIAS=""
+HARDCODED_HOST=""
+HARDCODED_PORT="8000"
+HARDCODED_USERNAME=""
+HARDCODED_PASSWORD=""
+HARDCODED_API_VERSION="v1"
+HARDCODED_USE_HTTPS="false"
+```
+
+Leave fields blank to use the config file or interactive prompts instead.
+
+## Scheduling with launchd (macOS)
+To run on a schedule without cron, create a launchd plist:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.p5healthcheck.daily</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/Shared/scripts/p5_health_check.sh</string>
+        <!-- Replace the path above with the actual absolute path to p5_health_check.sh on your system -->
+        <string>-n</string>
+        <string>-c</string>
+        <string>/Users/Shared/P5Servers.json</string>
+        <string>-o</string>
+        <string>/Users/Shared/p5-reports</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
+```
+
+Save to `~/Library/LaunchAgents/com.p5healthcheck.daily.plist` and load with:
+```bash
+launchctl load ~/Library/LaunchAgents/com.p5healthcheck.daily.plist
+```

@@ -1,5 +1,5 @@
 {
-  "_comment": "P5 Health Check — server list example. Save as P5Servers.json in /Users/Shared/ or ~/Documents/ for auto-import by P5Window and P5MenuBar on launch. Passwords are never stored here — enter them in each app's Settings after import (saved to Keychain). Supported filenames: P5Servers.json, P5HealthCheckServers.json.",
+  "_comment": "P5 Health Check CLI — server list example. Pass this file with: ./p5_health_check.sh -c /path/to/this/file.json. Without -c, the script auto-detects in order: /Users/Shared/P5Servers.json, /Users/Shared/P5HealthCheckServers.json, ~/Documents/P5Servers.json, ~/Documents/P5HealthCheckServers.json. Passwords are never stored here — the script reads from Keychain or prompts interactively. Supported top-level shapes: { \"servers\": [ ... ] } or [ ... ].",
   "servers": [
     {
       "alias": "P5 Primary",
