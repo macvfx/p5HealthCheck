@@ -35,10 +35,10 @@ Both tools share the same server config format (`P5Servers.json`) and Keychain p
 See `Documents/CHANGELOG-P5-Health-Check.md` for the full feature comparison table.
 
 ## App Guides
-- Window app guide: `Documents/USER_GUIDE-P5Window.md`
-- Menu bar app guide: `Documents/USER_GUIDE-P5MenuBar.md`
-- CLI guide: `scripts/p5_health_check.sh --help` (or run the script without arguments)
-- Changelog: `Documents/CHANGELOG-P5-Health-Check.md` (current: v1.0 build 3)
+- Window app guide: `USER_GUIDE-P5Window.md`
+- Menu bar app guide: `USER_GUIDE-P5MenuBar.md`
+- CLI guide: `p5_health_check.sh --help` (or run the script without arguments)
+- Changelog: `WHATS-NEW-0.8-to-v1.0.md` (current: v1.0 build 3)
 
 ## Requirements
 - macOS 12+ for `P5Window`.
