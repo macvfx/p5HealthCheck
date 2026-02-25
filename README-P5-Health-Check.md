@@ -8,6 +8,7 @@ Both apps use the P5 REST API to surface health and tape status details from one
 
 ## Core Features
 - Shared server configuration (alias, host, port, API version, auth).
+- Duplicate server action for fast cloning/editing variants.
 - Server info and uptime monitoring.
 - Device cleaning status (clean / not clean).
 - Jukebox status: slot count and volumes loaded per library.
@@ -20,6 +21,10 @@ Both apps use the P5 REST API to surface health and tape status details from one
   - plan markdown export (All / Archive / Backup / Sync)
   - job result CSV export (All / Error / Warning)
 - Multi-server refresh and quick comparison.
+- Menu bar popover uses `Refresh All` (selected-server controls removed in v1.3).
+- Menu bar `Server Reports` supports `Detailed` and `Grid` layouts when more than 3 servers are configured.
+- Menu bar report area is taller in v1.3 and only scrolls when the chosen layout exceeds available popover space.
+- Settings edit flow in both apps now opens the selected server editor populated on the first click (no add/close workaround).
 
 ## App vs CLI
 
@@ -54,8 +59,4 @@ See `Documents/CHANGELOG-P5-Health-Check.md` for the full feature comparison tab
 1. Open `P5HealthCheck.xcodeproj` in Xcode.
 2. Build and run either `P5Window` or `P5MenuBar` scheme.
 3. Add one or more servers in settings.
-4. Run `Refresh` or `Refresh All`.1. Open `P5HealthCheck.xcodeproj` in Xcode.
-2. Build and run either `P5Window` or `P5MenuBar` scheme.
-3. Add one or more servers in settings.
 4. Run `Refresh` or `Refresh All`.
-
