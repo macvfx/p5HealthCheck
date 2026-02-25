@@ -6,7 +6,7 @@
 
 ## What it does
 - Checks one P5 server per run (non-interactive) or prompts to check additional servers (interactive).
-- Runs up to 7 checks — all enabled by default in non-interactive mode.
+- Runs up to 8 checks — all enabled by default in non-interactive mode.
 - Reads credentials from macOS Keychain (or prompts interactively).
 - Outputs per-run files to the current directory (or a specified output path).
 
@@ -18,6 +18,7 @@
 5. Volumes + mode counts + CSV (Appendable / Readonly / Full, with Last Used, Use Count, Error Count)
 6. Jukeboxes (slot count and volumes loaded per library) — non-fatal if unavailable
 7. Licence resources — prints `[ALERT]` for depleted (`free = 0`), `[WARN]` for low (`free ≤ 2`); non-fatal if unavailable
+8. Plans export (all/archive/backup/sync markdown)
 
 ## Output files
 Default output directory: current working directory. Override with `-o DIR`.
@@ -28,35 +29,40 @@ Default output directory: current working directory. Override with `-o DIR`.
 | `<alias>-YYYYMMDD-HHMMSS-volumes.csv` | Volume list with Last Used, Use Count, Error Count |
 | `<alias>-YYYYMMDD-HHMMSS-warnings.csv` | Warning jobs |
 | `<alias>-YYYYMMDD-HHMMSS-errors.csv` | Error jobs |
+| `<alias>-YYYYMMDD-HHMMSS-all-job-results.csv` | Combined warning + error job results (deduplicated by Job ID) |
+| `<alias>-YYYYMMDD-HHMMSS-all-plans.md` | Markdown export of all plans |
+| `<alias>-YYYYMMDD-HHMMSS-archive-plans.md` | Markdown export of archive plans |
+| `<alias>-YYYYMMDD-HHMMSS-backup-plans.md` | Markdown export of backup plans |
+| `<alias>-YYYYMMDD-HHMMSS-sync-plans.md` | Markdown export of sync plans |
 
 ## Usage
 Run from Terminal:
 
 ```bash
-chmod +x scripts/p5_health_check.sh
-.p5_health_check.sh
+chmod +x p5_health_check.sh
+./p5_health_check.sh
 ```
 
 Common options:
 
 ```bash
 # Non-interactive run using shared server config
-.p5_health_check.sh -n -c "/Users/Shared/P5Servers.json"
+./p5_health_check.sh -n -c "/Users/Shared/P5Servers.json"
 
 # Save reports to a specific folder
-.p5_health_check.sh -o "./p5-reports"
+./p5_health_check.sh -o "/p5-reports"
 
 # Wider job lookback and more volume records
-.p5_health_check.sh -l 14 -m 1000
+./p5_health_check.sh -l 14 -m 1000
 
 # Use Keychain password in interactive mode
-.p5_health_check.sh -K
+./p5_health_check.sh -K
 
 # Force password prompt (ignores Keychain and hardcoded values)
-.p5_health_check.sh -p
+./p5_health_check.sh -p
 
 # Full non-interactive run with custom config and output path
-.p5_health_check.sh -n -c "/Users/Shared/P5Servers.json" -o "./p5-reports"
+./p5_health_check.sh -n -c "/Users/Shared/P5Servers.json" -o "/p5-reports"
 ```
 
 ## Option Reference
@@ -64,10 +70,10 @@ Common options:
 | Option | Description |
 |---|---|
 | `-o DIR` | Output directory for generated files. Default: current working directory. |
-| `-c FILE` | Server config JSON path. Default: `/Users/Shared/P5Servers.json` (if present). |
+| `-c FILE` | Server config JSON path. Default: auto-detect in this order: `/Users/Shared/P5Servers.json`, `/Users/Shared/P5HealthCheckServers.json`, `~/Documents/P5Servers.json`, `~/Documents/P5HealthCheckServers.json`. |
 | `-l N` | Job lookback window in days. Default: `7`. |
 | `-m N` | Max volume detail records to fetch. Default: `500`. Use `0` for unlimited. |
-| `-n` | Non-interactive mode — runs once, all 7 checks, no prompts. |
+| `-n` | Non-interactive mode — runs once, all 8 checks, no prompts. |
 | `-k` | Allow insecure TLS (`curl -k`) for self-signed certificates. |
 | `-K` | Try Keychain password before prompting (interactive mode). |
 | `-p` | Force password prompt — ignores Keychain and hardcoded values. |
@@ -125,7 +131,7 @@ Passwords are never stored in the file. The script reads them from Keychain or p
 
 ## Non-Interactive Mode (`-n`)
 - Runs once without any prompts.
-- All 7 checks run automatically.
+- All 8 checks run automatically.
 - Server selection: uses hardcoded values if set in script, otherwise uses the first server from the config file.
 - Password: uses `HARDCODED_PASSWORD` if set, otherwise reads from Keychain. If missing, exits with an error.
 
@@ -172,7 +178,7 @@ To run on a schedule without cron, create a launchd plist:
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/Sharedp5_health_check.sh</string>
+        <string>/Users/Shared/p5_health_check.sh</string>
         <!-- Replace the path above with the actual absolute path to p5_health_check.sh on your system -->
         <string>-n</string>
         <string>-c</string>
