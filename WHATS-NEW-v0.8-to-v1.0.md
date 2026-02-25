@@ -1,72 +1,43 @@
-# What's New — P5 Health Check v1.2
+# What's New — P5 Health Check v1.3
 
-A concise summary of the v1.2 release updates for the apps and CLI.
+A concise summary of the v1.3 release updates for the Mac apps.
 
 ---
 
 ## Release
-- **Version:** `1.2`
-- **Build:** `7`
-- **Date:** `2026-02-24`
+- **Version:** `1.3`
+- **Date:** `2026-02-25`
 
 ---
 
 ## Highlights
 
-### Plans Visibility (P5Window)
-- Added a dedicated **Plans** disclosure section in the main dashboard.
-- Displays configured **Archive**, **Backup**, and **Sync** plans returned by the P5 API.
-- Shows grouped counts and plan detail rows directly in the UI.
+### Menu Bar Multi-Server Layout Modes
+- For more than 3 servers, `P5MenuBar` now supports two report layouts:
+  - `Detailed` (stacked full cards)
+  - `Grid` (compact 3-per-row cards)
+- Scroll appears only when the selected layout exceeds available popover height.
 
-### Export Menu Expansion (P5Window)
-- Export menu now includes plan markdown exports:
-  - `All Plans`
-  - `Archive Plans`
-  - `Backup Plans`
-  - `Sync Plans`
-- Export menu now includes job CSV exports:
-  - `All Job Results`
-  - `Error Job Results`
-  - `Warning Job Results`
+### Server Edit Prefill Bug Fixed
+- Editing an existing server in either app now opens with fields pre-populated every time.
+- Removed the prior add/close workaround requirement.
 
-### Archive Plan Output Cleanup
-- Archive plans no longer show empty **Source**, **Target**, or **Schedule** rows in UI export output.
-- Plan markdown export now keeps archive entries concise and relevant.
+### Duplicate Server Action (Both Apps)
+- Added `Duplicate` server action in settings/server controls for `P5Window` and `P5MenuBar`.
+- Useful for quickly cloning an entry and changing only IP, port, or credentials.
+- Duplicate preserves key server fields and copies saved Keychain password when available.
 
----
+### Menu Bar Refresh Workflow Simplified
+- Removed selected-server picker and `Refresh Selected` action from the menu bar UI.
+- Menu bar now uses `Refresh All` only, keeping controls simpler and consistent with compact monitoring use.
 
-## CLI (`p5_health_check.sh`) Updates
-
-### New Exports
-- Added plan markdown exports:
-  - `<alias>-<timestamp>-all-plans.md`
-  - `<alias>-<timestamp>-archive-plans.md`
-  - `<alias>-<timestamp>-backup-plans.md`
-  - `<alias>-<timestamp>-sync-plans.md`
-- Added merged job export:
-  - `<alias>-<timestamp>-all-job-results.csv`
-
-### Check Set Expansion
-- CLI now runs **8 checks** in non-interactive mode (`-n`), including plans export.
-
-### Report JSON Additions
-- `checksRun.plans`
-- `summary.planTotalCount`
-- `summary.archivePlanCount`
-- `summary.backupPlanCount`
-- `summary.syncPlanCount`
-- `plans` array in report output
-
-### Config Auto-Detection Alignment
-- CLI default config detection now matches app behavior:
-  1. `/Users/Shared/P5Servers.json`
-  2. `/Users/Shared/P5HealthCheckServers.json`
-  3. `~/Documents/P5Servers.json`
-  4. `~/Documents/P5HealthCheckServers.json`
+### Volumes Disclosure Improvements (P5Window)
+- `Volumes` is now a disclosure section with a richer header.
+- Closed-state header shows total volume count and coloured mode pills (Appendable/Readonly/Full), matching other grouped sections.
 
 ---
 
-## Documentation Updates in v1.2
-- Updated CLI guide with 8-check flow and new export outputs.
-- Updated P5Window guide with Plans section and export flow details.
-- Updated roadmap and UI/API flow docs to reflect shipped v1.2 functionality.
+## Documentation Updates in v1.3
+- Updated changelog with v1.3 issue/fix breakdown.
+- Updated menu bar and window user guides for new controls and section behaviour.
+- Updated overview/readme docs, roadmap, and UI/API flow notes for v1.3 UI changes.
