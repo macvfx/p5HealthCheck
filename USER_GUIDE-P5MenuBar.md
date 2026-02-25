@@ -1,77 +1,46 @@
-# User Guide - P5MenuBar
+# What's New — P5 Health Check v1.3
 
-## What It Is
-`P5MenuBar` is the compact monitoring app that runs in the macOS menu bar. It provides a fast, always-available health snapshot for one or more P5 servers without needing to open a full window.
+A concise summary of the v1.3 release updates for the Mac apps.
 
-## App vs CLI
+---
 
-P5 Health Check ships two independent tools for the same P5 REST API:
+## Release
+- **Version:** `1.3`
+- **Date:** `2026-02-25`
 
-- **Mac apps** (`P5Window` + `P5MenuBar`) — interactive monitoring with auto-refresh, multi-server comparison, history tracking, and a colour-coded UI. Best for daily oversight.
-- **CLI** (`p5_health_check.sh`) — automation-friendly: runs unattended via cron/launchd, outputs a structured JSON report and CSVs per run, prints `[ALERT]`/`[WARN]` flags to stdout for licence and tape errors. Best for scripting and alerting pipelines.
+---
 
-Both tools share the same `P5Servers.json` config format and Keychain password storage.
+## Highlights
 
-## Main Features
-- Fast health snapshot for selected server.
-- Multi-server top summary (when more than one server exists).
-- Multi-server grouped status cards (one group per server).
-- Per-server group shows:
-  - Server name
-  - Drive status: `Clean` (green) or `Not Clean` (red)
-  - Uptime
-  - Warning and error counts (green when 0, orange/red when > 0)
-  - Tape mode counts: Appendable / Readonly / Full
-- Jukebox status per server: volumes loaded / slot count per library.
-- Licence warnings when any resource is depleted or low.
-- Buttons: `Refresh Selected`, `All` (refresh all), `Settings`.
-- Menu bar icon flashes red when any configured server reports a cleaning-required drive.
+### Menu Bar Multi-Server Layout Modes
+- For more than 3 servers, `P5MenuBar` now supports two report layouts:
+  - `Detailed` (stacked full cards)
+  - `Grid` (compact 3-per-row cards)
+- Scroll appears only when the selected layout exceeds available popover height.
 
-## How To Use
-1. Launch `P5MenuBar`.
-2. Click the menu bar icon to open the popover.
-3. Click `Settings` to add/edit/remove servers.
-4. In Settings, use `Import JSON` or `Export JSON` to load or save a server list.
-5. Use `Refresh Selected` for the current server or `All` for all servers.
-6. Review server groups and status pills.
+### Server Edit Prefill Bug Fixed
+- Editing an existing server in either app now opens with fields pre-populated every time.
+- Removed the prior add/close workaround requirement.
 
-## JSON Import & Export
+### Duplicate Server Action (Both Apps)
+- Added `Duplicate` server action in settings/server controls for `P5Window` and `P5MenuBar`.
+- Useful for quickly cloning an entry and changing only IP, port, or credentials.
+- Duplicate preserves key server fields and copies saved Keychain password when available.
 
-### Import
-1. Open `Settings`.
-2. Click `Import JSON` in the Servers section.
-3. Choose a JSON file — supports `{ "servers": [ ... ] }` or `[ ... ]` format.
-4. Imported servers are added without passwords; duplicates are skipped.
-5. Edit each new server once to enter its password (saved to Keychain).
+### Menu Bar Refresh Workflow Simplified
+- Removed selected-server picker and `Refresh Selected` action from the menu bar UI.
+- Menu bar now uses `Refresh All` only, keeping controls simpler and consistent with compact monitoring use.
 
-### Export
-1. Open `Settings`.
-2. Click `Export JSON` in the Servers section.
-3. Choose a save location — filename defaults to `P5Servers.json`.
-4. The file contains all server details except passwords.
-5. The exported file can be imported by any other P5 Archive app.
+### Volumes Disclosure Improvements (P5Window)
+- `Volumes` is now a disclosure section with a richer header.
+- Closed-state header shows total volume count and coloured mode pills (Appendable/Readonly/Full), matching other grouped sections.
 
-### Auto-detection at launch
-The app automatically imports new servers on launch if either of these files is present:
+---
 
-| File | Location |
-|---|---|
-| `P5Servers.json` | `/Users/Shared/` or `~/Documents/` |
-| `P5HealthCheckServers.json` | `/Users/Shared/` or `~/Documents/` |
-
-Duplicate servers (matched by alias) are skipped. Passwords are never stored in the file — enter them in Settings after import.
-
-## Settings Window
-The Settings window is organised into two sections:
-
-**Servers**
-- Server list with active-server picker.
-- Action buttons (first row): `Add`, `Edit`, `Delete`.
-- Action buttons (second row): `Import JSON`, `Export JSON`.
-- Server editor fields: Alias, Host / IP Address, Port, Username, Password (with show/hide toggle), API version, HTTPS toggle.
-
-**Scheduler**
-- Horizontal row of rounded boxes: **Mode** (Manual / Hourly / Daily) → **Detail** (interval or time) → **Retention** (history days).
+## Documentation Updates in v1.3
+- Updated changelog with v1.3 issue/fix breakdown.
+- Updated menu bar and window user guides for new controls and section behaviour.
+- Updated overview/readme docs, roadmap, and UI/API flow notes for v1.3 UI changes.
 - `Refresh Selected` and `Refresh All` action buttons below the scheduler.
 
 ## Notes
