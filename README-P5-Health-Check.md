@@ -13,8 +13,12 @@ Both apps use the P5 REST API to surface health and tape status details from one
 - Jukebox status: slot count and volumes loaded per library.
 - Licence resource free-count monitoring with alert colouring.
 - Job warning and failed job visibility.
+- Plans visibility: configured Archive / Backup / Sync plans.
 - Tape volume overview by mode (`Appendable`, `Readonly`, `Full`) with tape health stats (last used, use count, error count).
-- CSV export of volume list with health columns (window app).
+- Export menu options (window app):
+  - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)
+  - plan markdown export (All / Archive / Backup / Sync)
+  - job result CSV export (All / Error / Warning)
 - Multi-server refresh and quick comparison.
 
 ## App vs CLI
@@ -38,7 +42,7 @@ See `Documents/CHANGELOG-P5-Health-Check.md` for the full feature comparison tab
 - Window app guide: `USER_GUIDE-P5Window.md`
 - Menu bar app guide: `USER_GUIDE-P5MenuBar.md`
 - CLI guide: `p5_health_check.sh --help` (or run the script without arguments)
-- Changelog: `WHATS-NEW-0.8-to-v1.0.md` (current: v1.0 build 3)
+
 
 ## Requirements
 - macOS 12+ for `P5Window`.
@@ -48,6 +52,9 @@ See `Documents/CHANGELOG-P5-Health-Check.md` for the full feature comparison tab
 
 ## Quick Start
 1. Open `P5HealthCheck.xcodeproj` in Xcode.
+2. Build and run either `P5Window` or `P5MenuBar` scheme.
+3. Add one or more servers in settings.
+4. Run `Refresh` or `Refresh All`.1. Open `P5HealthCheck.xcodeproj` in Xcode.
 2. Build and run either `P5Window` or `P5MenuBar` scheme.
 3. Add one or more servers in settings.
 4. Run `Refresh` or `Refresh All`.
