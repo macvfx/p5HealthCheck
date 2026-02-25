@@ -45,6 +45,15 @@
 - **CLI all-job-results CSV export** — merged/deduplicated warning+error job export added.
 - **CLI report JSON plan data** — added `checksRun.plans`, plan summary counts, and `plans` array.
 - **CLI config auto-detect alignment** — default config lookup now checks `P5Servers.json` and `P5HealthCheckServers.json` in `/Users/Shared` and `~/Documents`, matching app behavior.
+- **Sync plan loading hardening (build 8)** — synchronize plans now handle endpoint/payload variations and partial failures without showing false `No plans` states.
+
+## Completed — v1.3
+- **Menu bar server-list overflow fix** — multi-server cards are now scrollable when server count is greater than 3.
+- **Menu bar report layout toggle** — for server counts greater than 3, users can switch `Server Reports` between `Detailed` and compact `Grid` (3-per-row) modes.
+- **Server editor prefill bug fix** — editing an existing server now opens pre-populated in both app settings UIs (no add/close workaround required).
+- **Duplicate server action** — added duplicate button in both app settings UIs; duplicate clones server fields and copies Keychain password when available.
+- **Menu bar control simplification** — removed selected-server picker and selected refresh action from menu bar UI; retained `Refresh All`.
+- **Volumes section UX update (window app)** — Volumes converted to disclosure group with closed-state total and mode status pills in header.
 
 ## Planned — Near Term
 - **Licence maintenance/renewal date** — expose maintenance expiry date in the menu bar popover and window app once the P5 REST API surfaces this field. (TODO placeholder already in both views.)
