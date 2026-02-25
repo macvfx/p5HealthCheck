@@ -14,7 +14,7 @@ It includes:
 Primary desktop UI for detailed health analysis.
 
 Key features:
-- Multi-server management (add/edit/delete/select); import/export server list as JSON.
+- Multi-server management (add/edit/duplicate/delete/select); import/export server list as JSON.
 - Secure password storage in Keychain.
 - Health checks for:
   - server info and uptime
@@ -22,22 +22,30 @@ Key features:
   - jukebox status (slot count and volumes loaded per library)
   - licence resource free counts (colour-coded by urgency)
   - warning jobs and error jobs (collapsible, with live count badge)
+  - configured archive / backup / sync plans
   - volume inventory and mode counts (Appendable / Readonly / Full) with tape health stats
 - Multi-server summary view with colour-coded drive and job status.
 - Historical sections for job issues and volume changes (SQLite-backed).
-- CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage) including Last Used, Use Count, and Error Count columns.
+- Export menu options:
+  - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)
+  - plan markdown export (All Plans / Archive Plans / Backup Plans / Sync Plans)
+  - job result CSV export (All Job Results / Error Job Results / Warning Job Results)
 - Auto-refresh scheduler (manual / hourly / daily).
 
 ### 2) P5MenuBar (macOS menu bar app)
 Always-available compact monitor from the menu bar.
 
 Key features:
-- Popover status for selected/all configured servers.
+- Popover status for all configured servers.
 - Multi-server summary at top (when multiple servers are configured).
 - Per-server group: Drive status (green/red), uptime, job warn/error counts, tape mode counts, jukebox pills.
+- For more than 3 servers, `Server Reports` supports `Detailed` and `Grid` views (compact 3-per-row layout in grid mode).
+- Popover sizing was increased in v1.3 so about 3 server reports are visible before scrolling in most cases.
+- Reports scroll only when content exceeds available popover space in the current layout mode.
 - Licence warning pills when any resource is depleted or low.
 - Cleaning alert: menu bar icon flashes red when any server needs drive cleaning.
-- Quick actions: Refresh Selected, Refresh All, open Settings.
+- Quick actions: Refresh All, open Settings.
+- Footer actions: `Open Main App` (launches `P5Window`) and `Quit`.
 
 ### 3) Bash CLI (`p5_health_check.sh`)
 Terminal-first health checks for manual runs or automation.
@@ -102,6 +110,7 @@ Passwords are never stored in the file. Enter them in each app's Settings (saved
 **P5Window** — `Import Servers JSON` and `Export Servers JSON` buttons in the server sidebar.
 
 **P5MenuBar** — `Import JSON` and `Export JSON` buttons in Settings → Servers section.
+Both apps support `Duplicate` server actions, and v1.3 fixes the settings edit flow so `Edit` opens prefilled on the first click after selecting a row.
 
 Exported files default to `P5Servers.json` and can be shared with any other P5 Archive app.
 
@@ -112,11 +121,3 @@ Exported files default to `P5Servers.json` and can be shared with any other P5 A
 4. Use the menu bar app for quick daily monitoring.
 5. Use the window app for deeper review, history, and CSV exports.
 6. Use the CLI for scripted/scheduled runs or integration with alerting pipelines.
-
-## Related Docs
-- Window app guide: `USER_GUIDE-P5Window.md`
-- Menu bar guide: `USER_GUIDE-P5MenuBar.md`
-- CLI guide: `USER_GUIDE-P5-Health-Check-CLI.md`
-- Changelog: `CHANGELOG-P5-Health-Check.md`
-- What's new (v0.8 → v1.0): `WHATS-NEW-v0.8-to-v1.0.md`
-- Roadmap: `ROADMAP-P5HealthCheck.md`
