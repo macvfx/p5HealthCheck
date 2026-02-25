@@ -1,6 +1,6 @@
 # P5 Health Check — UI Flow & REST API Mapping
 
-Maps every user-visible action in P5 Health Check (v1.2) to the underlying P5 REST API calls, then lists untapped endpoints from `P5_openapi.json` (API v7.1.0+) and the tested calls in `P5 rest API example.json` that are not yet implemented.
+Maps every user-visible action in P5 Health Check (v1.3) to the underlying P5 REST API calls, then lists untapped endpoints from `P5_openapi.json` (API v7.1.0+) and the tested calls in `P5 rest API example.json` that are not yet implemented.
 
 Base URL: `http(s)://{host}:{port}/rest/{apiVersion}/`
 Auth: HTTP Basic (username + password from Keychain)
@@ -15,6 +15,8 @@ Every request is `GET` with `Accept: application/json`. Additional filter parame
 ### Refresh Selected / Refresh All
 Both buttons trigger `HealthMonitor.refresh()` or `HealthMonitor.refreshAll()`.
 Each server fetch runs these calls concurrently (`async let` for core data; non-fatal `try?` for jukeboxes and licence):
+
+Note: in v1.3, `P5MenuBar` uses `Refresh All` only; `Refresh Selected` remains available in `P5Window`.
 
 | UI Section Populated | REST Call | Headers | Source method |
 |---|---|---|---|
@@ -35,6 +37,8 @@ Each server fetch runs these calls concurrently (`async let` for core data; non-
 | Plans — archive plan IDs/details | `GET /archive/plans`, `GET /archive/plans/{planID}` | — | `fetchArchivePlans()` |
 | Plans — backup plan IDs/details/tasks/events | `GET /backup/plans`, `GET /backup/plans/{planID}`, `GET /backup/plans/{planID}/tasks/`, `GET /backup/plans/{planID}/tasks/{taskID}`, `GET /backup/plans/{planID}/events/`, `GET /backup/plans/{planID}/events/{eventID}` | — | `fetchBackupPlans()` |
 | Plans — sync plan IDs/details/events | `GET /synchronize/plans`, `GET /synchronize/plans/{planID}`, `GET /synchronize/plans/{planID}/events`, `GET /synchronize/plans/{planID}/events/{eventID}` | — | `fetchSyncPlans()` |
+
+Sync plan fetching is fault-tolerant in build 8: if one synchronize plan or event request fails, other sync plans are still shown.
 
 **Settings that affect calls:**
 - `Warning job lookback (days)` → sets the `lastdays` header value (0 = omit header, returns all)
@@ -241,5 +245,5 @@ Accept:    application/json
 
 ---
 
-*Document based on P5 Health Check v1.2 (build 7) and P5 REST API v7.1.0+*
+*Document based on P5 Health Check v1.3 and P5 REST API v7.1.0+*
 *Source files: `P5_openapi.json`, `P5 rest API example.json`*
