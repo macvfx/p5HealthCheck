@@ -1,6 +1,6 @@
 # P5 Health Check — UI Flow & REST API Mapping
 
-Maps every user-visible action in P5 Health Check (v1.0) to the underlying P5 REST API calls, then lists untapped endpoints from `P5_openapi.json` (API v7.1.0+) and the tested calls in `P5 rest API example.json` that are not yet implemented.
+Maps every user-visible action in P5 Health Check (v1.2) to the underlying P5 REST API calls, then lists untapped endpoints from `P5_openapi.json` (API v7.1.0+) and the tested calls in `P5 rest API example.json` that are not yet implemented.
 
 Base URL: `http(s)://{host}:{port}/rest/{apiVersion}/`
 Auth: HTTP Basic (username + password from Keychain)
@@ -32,6 +32,9 @@ Each server fetch runs these calls concurrently (`async let` for core data; non-
 | Jukeboxes — volumes loaded per library | `GET /general/jukeboxes/{jukeboxID}/volumes` | — | `fetchJukebox()` |
 | Licence — resource type IDs | `GET /license/resources` | — | `fetchLicenceResources()` |
 | Licence — free count per resource | `GET /license/resources/{resourceID}` | — | `fetchLicenceResource()` |
+| Plans — archive plan IDs/details | `GET /archive/plans`, `GET /archive/plans/{planID}` | — | `fetchArchivePlans()` |
+| Plans — backup plan IDs/details/tasks/events | `GET /backup/plans`, `GET /backup/plans/{planID}`, `GET /backup/plans/{planID}/tasks/`, `GET /backup/plans/{planID}/tasks/{taskID}`, `GET /backup/plans/{planID}/events/`, `GET /backup/plans/{planID}/events/{eventID}` | — | `fetchBackupPlans()` |
+| Plans — sync plan IDs/details/events | `GET /synchronize/plans`, `GET /synchronize/plans/{planID}`, `GET /synchronize/plans/{planID}/events`, `GET /synchronize/plans/{planID}/events/{eventID}` | — | `fetchSyncPlans()` |
 
 **Settings that affect calls:**
 - `Warning job lookback (days)` → sets the `lastdays` header value (0 = omit header, returns all)
@@ -47,9 +50,24 @@ Same API calls as Refresh All. A SQLite scheduler lease prevents concurrent refr
 | Hourly | Fires every N hours |
 | Daily | Fires at configured HH:MM |
 
-### Export Menu (All Volumes / Archive Tape Usage / Backup Tape Usage)
-**No new API call** — uses the volume data already fetched by Refresh.
-Writes a local CSV from the cached `snapshot.volumes` array, filtered and sorted in Swift.
+### Export Menu
+**No new API call** — uses cached data already fetched by Refresh.
+
+- Volume CSV export:
+  - `All Volumes`
+  - `Archive Tape Usage`
+  - `Backup Tape Usage`
+- Plan markdown export:
+  - `All Plans`
+  - `Archive Plans`
+  - `Backup Plans`
+  - `Sync Plans`
+  - Archive plan markdown intentionally omits Source/Target/Schedule rows when those fields are not applicable.
+- Job CSV export:
+  - `All Job Results`
+  - `Error Job Results`
+  - `Warning Job Results`
+  - `All Job Results` merges warning + error jobs and de-duplicates by `jobID`.
 
 ### Add / Edit / Delete Server (sidebar)
 **No API call** — operates only on local `HealthSettings` (UserDefaults + Keychain).
@@ -177,8 +195,8 @@ Based on the tested calls and OpenAPI spec, these additions would add the most v
 
 ### High value / medium effort
 
-1. **Archive & Backup plan overview** — `GET /archive/overview` + `GET /backup/overview` + `GET /archive/plans` + `GET /backup/plans`
-   Add a Plans section showing plan counts, last-run timestamps, and aggregate status. Acts as a quick "are all plans running?" check. Covers the most common admin concern after tape health.
+1. **Plan run-health enrichment** — `GET /archive/overview` + `GET /backup/overview` + `GET /synchronize/overview`
+   Extend the existing Plans section with last-run/next-run and aggregate run-health signals so operators can quickly identify stalled schedules.
 
 2. **Pool panel** — `GET /general/pools` + `GET /general/pools/{id}` + `GET /general/pools/{id}/volumes`
    Show pool names with volume counts and capacity — useful when tapes span multiple pools or pool capacity is a concern.
@@ -223,4 +241,5 @@ Accept:    application/json
 
 ---
 
-*Document based on P5 Health Check v1.0 (build 2) and P5 REST API v7.1.0+*
+*Document based on P5 Health Check v1.2 (build 7) and P5 REST API v7.1.0+*
+*Source files: `P5_openapi.json`, `P5 rest API example.json`*
