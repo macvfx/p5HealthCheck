@@ -33,9 +33,18 @@
 - **Volume chips colour-coded** — Appendable (green) / Readonly (orange) / Full (red) in both apps.
 - **Menu bar Drive: styling** — grey label + semibold green/red Clean/Not Clean text.
 - **Window multi-server summary restyled** — drive/jobs colour-coded, grey labels.
-- **CLI expanded to 7 checks** — jukeboxes (check 6) and licence (check 7) added; all 7 run by default in `-n` mode.
+- **CLI expanded to 8 checks** — jukeboxes (check 6), licence (check 7), and plans export (check 8); all 8 run by default in `-n` mode.
 - **CLI volume CSV gains health columns** — Last Used, Use Count, Error Count.
 - **CLI report JSON extended** — `jukeboxes`, `licenceResources`, `volumeTotalErrors`, `licenceAlertCount`, `licenceWarnCount` in report output.
+
+## Completed — v1.2
+- **Plans section** (P5Window) — disclosure section listing configured Archive, Backup, and Sync plans.
+- **Export menu expansion** (P5Window) — plan markdown exports now include All Plans, Archive Plans, Backup Plans, and Sync Plans; job CSV exports now include All Job Results in addition to Error/Warning.
+- **Archive plan cleanup** — archive plans no longer display empty Source/Target/Schedule fields in app export output.
+- **CLI plan markdown exports** — added All Plans, Archive Plans, Backup Plans, and Sync Plans markdown outputs.
+- **CLI all-job-results CSV export** — merged/deduplicated warning+error job export added.
+- **CLI report JSON plan data** — added `checksRun.plans`, plan summary counts, and `plans` array.
+- **CLI config auto-detect alignment** — default config lookup now checks `P5Servers.json` and `P5HealthCheckServers.json` in `/Users/Shared` and `~/Documents`, matching app behavior.
 
 ## Planned — Near Term
 - **Licence maintenance/renewal date** — expose maintenance expiry date in the menu bar popover and window app once the P5 REST API surfaces this field. (TODO placeholder already in both views.)
