@@ -674,6 +674,7 @@ run_server_health_check() {
   local appendable_count=0
   local readonly_count=0
   local full_count=0
+  local total_error_count=0
   local plan_total_count=0
   local archive_plan_count=0
   local backup_plan_count=0
@@ -945,7 +946,6 @@ PY
     echo "Volume ID,Label,Barcode,Location,Mode,Usage,State,Media Type,Used Size (KBytes),Total Size (KBytes),Used Size (Human),Total Size (Human),Last Used,Use Count,Error Count" > "$volumes_csv"
 
     local count=0
-    local total_error_count=0
     while IFS= read -r vol_id; do
       if [[ "$MAX_VOLUME_DETAILS" != "0" && "$count" -ge "$MAX_VOLUME_DETAILS" ]]; then
         break
