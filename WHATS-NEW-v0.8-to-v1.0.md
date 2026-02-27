@@ -1,4 +1,35 @@
-# What's New — P5 Health Check v1.3
+# What's New — P5 Health Check (latest highlights)
+
+## v1.4 Highlights
+
+### Release
+- **Version:** `1.4`
+- **Date:** `2026-02-27`
+
+### Uptime Check Scheduling Added
+- Added dedicated uptime/connectivity interval controls in both app settings.
+- Presets: `15 min`, `1 hour`, `1 day`, plus `Custom`.
+- Custom uptime interval supports up to `1440` minutes.
+
+### Scheduler UX Clarified (Menu Bar Settings)
+- Scheduler labels now clearly separate:
+  - `1) Refresh all info via API`
+  - `2) Check uptime`
+- Settings window dimensions were increased so scheduler controls fit cleanly.
+
+### Menu Bar Status Readout Refinement
+- Compact status line now uses:
+  - `P5 Up/Down - LTO ●`
+- Only `Up/Down` is colour-coded; `LTO` state is indicated by end-of-line dot colour.
+- Removed `Clean/Not Clean` text from that compact row to reduce crowding.
+
+### Stability & Build Fixes
+- Fixed SwiftUI publish-cycle warnings in monitor refresh paths (`Publishing changes from within view updates...`).
+- Fixed menu bar settings compile/scope issue around `MenuBarSettingsWindow`.
+
+---
+
+## v1.3 Highlights
 
 A concise summary of the v1.3 release updates for the Mac apps.
 
