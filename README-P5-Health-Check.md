@@ -10,6 +10,7 @@ Both apps use the P5 REST API to surface health and tape status details from one
 - Shared server configuration (alias, host, port, API version, auth).
 - Duplicate server action for fast cloning/editing variants.
 - Server info and uptime monitoring.
+- Last-checked timestamp in server info (window app).
 - Device cleaning status (clean / not clean).
 - Jukebox status: slot count and volumes loaded per library.
 - Licence resource free-count monitoring with alert colouring.
@@ -21,9 +22,14 @@ Both apps use the P5 REST API to surface health and tape status details from one
   - plan markdown export (All / Archive / Backup / Sync)
   - job result CSV export (All / Error / Warning)
 - Multi-server refresh and quick comparison.
+- Dedicated uptime connectivity schedule with presets (`15 min`, `1 hour`, `1 day`, `Custom`) in both app settings.
 - Menu bar popover uses `Refresh All` (selected-server controls removed in v1.3).
 - Menu bar `Server Reports` supports `Detailed` and `Grid` layouts when more than 3 servers are configured.
 - Menu bar report area is taller in v1.3 and only scrolls when the chosen layout exceeds available popover space.
+- Menu bar scheduler labels now explicitly separate:
+  - full API refresh schedule
+  - uptime/connectivity check schedule
+- Menu bar compact status line now reads as `P5 Up/Down - LTO ●` for improved scanability in dense cards.
 - Settings edit flow in both apps now opens the selected server editor populated on the first click (no add/close workaround).
 
 ## App vs CLI
@@ -46,17 +52,12 @@ See `Documents/CHANGELOG-P5-Health-Check.md` for the full feature comparison tab
 ## App Guides
 - Window app guide: `USER_GUIDE-P5Window.md`
 - Menu bar app guide: `USER_GUIDE-P5MenuBar.md`
-- CLI guide: `p5_health_check.sh --help` (or run the script without arguments)
+- CLI guide: `USER_GUIDE-P5-Health-Check-CLI.md` and `p5_health_check.sh --help` (or run the script without arguments)
 
 
 ## Requirements
 - macOS 13.5+ for `P5Window`.
 - macOS 14+ for `P5MenuBar`.
+- Future compatibility policy: if a fix requires macOS 14 APIs, both apps may be aligned to macOS 14+.
 - Reachable P5 REST endpoint.
 - Valid username/password per server.
-
-## Quick Start
-1. Open `P5HealthCheck.xcodeproj` in Xcode.
-2. Build and run either `P5Window` or `P5MenuBar` scheme.
-3. Add one or more servers in settings.
-4. Run `Refresh` or `Refresh All`.
