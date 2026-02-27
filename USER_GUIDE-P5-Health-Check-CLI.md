@@ -26,6 +26,7 @@ Default output directory: current working directory. Override with `-o DIR`.
 | File | Contents |
 |---|---|
 | `<alias>-YYYYMMDD-HHMMSS-report.json` | Full structured report for all checks |
+| `<alias>-YYYYMMDD-HHMMSS-connectivity.csv` | Reachability snapshot with timestamp, up/down, response ms, uptime seconds, uptime human |
 | `<alias>-YYYYMMDD-HHMMSS-volumes.csv` | Volume list with Last Used, Use Count, Error Count |
 | `<alias>-YYYYMMDD-HHMMSS-warnings.csv` | Warning jobs |
 | `<alias>-YYYYMMDD-HHMMSS-errors.csv` | Error jobs |
@@ -35,6 +36,13 @@ Default output directory: current working directory. Override with `-o DIR`.
 | `<alias>-YYYYMMDD-HHMMSS-backup-plans.md` | Markdown export of backup plans |
 | `<alias>-YYYYMMDD-HHMMSS-sync-plans.md` | Markdown export of sync plans |
 
+### Connectivity CSV example
+
+```csv
+Captured At,Alias,Host,Port,Reachable,Response MS,Uptime Seconds,Uptime Human
+2026-02-27T09:15:00,P5 Primary,p5-primary.local,8000,true,182,93784,1d 2h 3m
+```
+
 ## Usage
 Run from Terminal:
 
@@ -42,6 +50,8 @@ Run from Terminal:
 chmod +x p5_health_check.sh
 ./p5_health_check.sh
 ```
+
+You can also place `p5_health_check.sh` in `/Library/Scripts`, `/usr/local/bin`, `~/bin`, or any other location in your `PATH`.
 
 Common options:
 
@@ -134,6 +144,8 @@ Passwords are never stored in the file. The script reads them from Keychain or p
 - All 8 checks run automatically.
 - Server selection: uses hardcoded values if set in script, otherwise uses the first server from the config file.
 - Password: uses `HARDCODED_PASSWORD` if set, otherwise reads from Keychain. If missing, exits with an error.
+- A connectivity CSV is always produced for the selected server, even if the server is unreachable.
+- If the server is down, the script records `P5 Down`, writes the connectivity CSV + JSON report, and skips the detailed API checks for that run.
 
 ## Keychain Behaviour
 - Service name: `com.p5healthcheck.shell`
@@ -179,7 +191,7 @@ To run on a schedule without cron, create a launchd plist:
     <array>
         <string>/bin/bash</string>
         <string>/Users/Shared/p5_health_check.sh</string>
-        <!-- Replace the path above with the actual absolute path to p5_health_check.sh on your system -->
+        <!-- Replace the path above with the actual absolute path where you installed p5_health_check.sh -->
         <string>-n</string>
         <string>-c</string>
         <string>/Users/Shared/P5Servers.json</string>
