@@ -15,8 +15,8 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 ## Main Areas
 - **Server list** (sidebar): add/edit/duplicate/delete server configs; import/export as JSON.
 - **Refresh Selected / Refresh All** (sidebar buttons): fetch latest health data for the selected server or all servers.
-- **Settings** (sidebar button): opens a sheet with Data Fetch, Auto Refresh, and History retention controls.
-- **Server info**: hostname, Lexx version, platform, uptime.
+- **Settings** (sidebar button): opens a sheet with Data Fetch, Auto Refresh, connectivity uptime-check interval, and History retention controls.
+- **Server info**: hostname, Lexx version, platform, uptime, and last checked timestamp.
 - **Devices**: whether drive cleaning is needed.
 - **Jukeboxes** (shown after Devices, if configured): tape library name, slot count, and volumes-loaded count per library.
 - **Licence** (shown after Jukeboxes, if available): collapsible section (click triangle to expand). Resources grouped by urgency — depleted (red "None"), low (orange count), normal (green count), unlimited (single "Unlimited" row). Header shows badge counts for depleted and low resources so you can spot issues without opening the section.
@@ -67,6 +67,7 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
    - **All Plans / Archive Plans / Backup Plans / Sync Plans** — markdown documentation export of configured plans
    - **All Job Results / Error Job Results / Warning Job Results** — job-result CSV exports
 7. Click `Settings` at the bottom of the sidebar to adjust Data Fetch, Auto Refresh, and History retention.
+   - Connectivity uptime checks use presets (`15 min`, `1 hour`, `1 day`) or a custom minute interval.
 
 ## JSON Import & Export
 
