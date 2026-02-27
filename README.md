@@ -18,6 +18,7 @@ Key features:
 - Secure password storage in Keychain.
 - Health checks for:
   - server info and uptime
+  - last checked timestamp
   - device cleaning state
   - jukebox status (slot count and volumes loaded per library)
   - licence resource free counts (colour-coded by urgency)
@@ -30,7 +31,8 @@ Key features:
   - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)
   - plan markdown export (All Plans / Archive Plans / Backup Plans / Sync Plans)
   - job result CSV export (All Job Results / Error Job Results / Warning Job Results)
-- Auto-refresh scheduler (manual / hourly / daily).
+- Auto-refresh scheduler (manual / hourly / daily) for full API data refresh.
+- Dedicated uptime/connectivity interval scheduler with presets (`15 min`, `1 hour`, `1 day`, `Custom` up to 1440 minutes).
 
 ### 2) P5MenuBar (macOS menu bar app)
 Always-available compact monitor from the menu bar.
@@ -39,9 +41,13 @@ Key features:
 - Popover status for all configured servers.
 - Multi-server summary at top (when multiple servers are configured).
 - Per-server group: Drive status (green/red), uptime, job warn/error counts, tape mode counts, jukebox pills.
+- Compact row format now uses `P5 Up/Down - LTO ●` for faster visual parsing in dense layouts.
 - For more than 3 servers, `Server Reports` supports `Detailed` and `Grid` views (compact 3-per-row layout in grid mode).
 - Popover sizing was increased in v1.3 so about 3 server reports are visible before scrolling in most cases.
 - Reports scroll only when content exceeds available popover space in the current layout mode.
+- Settings scheduler now labels two distinct schedules:
+  - `1) Refresh all info via API`
+  - `2) Check uptime`
 - Licence warning pills when any resource is depleted or low.
 - Cleaning alert: menu bar icon flashes red when any server needs drive cleaning.
 - Quick actions: Refresh All, open Settings.
