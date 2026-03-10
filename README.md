@@ -127,3 +127,6 @@ Exported files default to `P5Servers.json` and can be shared with any other P5 A
 4. Use the menu bar app for quick daily monitoring.
 5. Use the window app for deeper review, history, and CSV exports.
 6. Use the CLI for scripted/scheduled runs or integration with alerting pipelines.
+
+## 2026 code.matx.ca - P5 Archive Tools for macOS & iOS
+[For feedback, reach out via GitHub](https://github.com/macvfx) and [Support this project by optional donation](https://www.paypal.com/ncp/payment/ZX52VNS49SRZA)
