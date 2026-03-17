@@ -570,6 +570,7 @@ choose_checks() {
     RUN_DEVICES=1
     RUN_WARNINGS=1
     RUN_ERRORS=1
+    RUN_RUNNING=1
     RUN_VOLUMES=1
     RUN_JUKEBOXES=1
     RUN_LICENCE=1
@@ -583,10 +584,11 @@ choose_checks() {
   echo "  2) Devices (cleaning needed)"
   echo "  3) Job warnings"
   echo "  4) Job errors"
-  echo "  5) Volumes + mode counts + CSV"
-  echo "  6) Jukeboxes (slot count + volumes loaded)"
-  echo "  7) Licence resources (free counts)"
-  echo "  8) Plans export (all/archive/backup/sync markdown)"
+  echo "  5) Running jobs"
+  echo "  6) Volumes + mode counts + CSV"
+  echo "  7) Jukeboxes (slot count + volumes loaded)"
+  echo "  8) Licence resources (free counts)"
+  echo "  9) Plans export (all/archive/backup/sync markdown)"
   local choice
   read -r -p "Selection [all]: " choice
   choice="$(to_lower "$(trim "$choice")")"
@@ -595,6 +597,7 @@ choose_checks() {
     RUN_DEVICES=1
     RUN_WARNINGS=1
     RUN_ERRORS=1
+    RUN_RUNNING=1
     RUN_VOLUMES=1
     RUN_JUKEBOXES=1
     RUN_LICENCE=1
@@ -605,6 +608,7 @@ choose_checks() {
   RUN_DEVICES=0
   RUN_WARNINGS=0
   RUN_ERRORS=0
+  RUN_RUNNING=0
   RUN_VOLUMES=0
   RUN_JUKEBOXES=0
   RUN_LICENCE=0
@@ -618,10 +622,11 @@ choose_checks() {
       2) RUN_DEVICES=1 ;;
       3) RUN_WARNINGS=1 ;;
       4) RUN_ERRORS=1 ;;
-      5) RUN_VOLUMES=1 ;;
-      6) RUN_JUKEBOXES=1 ;;
-      7) RUN_LICENCE=1 ;;
-      8) RUN_PLANS=1 ;;
+      5) RUN_RUNNING=1 ;;
+      6) RUN_VOLUMES=1 ;;
+      7) RUN_JUKEBOXES=1 ;;
+      8) RUN_LICENCE=1 ;;
+      9) RUN_PLANS=1 ;;
       *) ;;
     esac
   done
@@ -643,6 +648,8 @@ run_server_health_check() {
   local warnings_csv="$OUT_DIR/${base_name}-warnings.csv"
   local errors_csv="$OUT_DIR/${base_name}-errors.csv"
   local all_jobs_csv="$OUT_DIR/${base_name}-all-job-results.csv"
+  local running_csv="$OUT_DIR/${base_name}-running.csv"
+  local recyclable_backup_csv="$OUT_DIR/${base_name}-recyclable-backup-volumes.csv"
   local all_plans_md="$OUT_DIR/${base_name}-all-plans.md"
   local archive_plans_md="$OUT_DIR/${base_name}-archive-plans.md"
   local backup_plans_md="$OUT_DIR/${base_name}-backup-plans.md"
@@ -652,6 +659,7 @@ run_server_health_check() {
   local dev_list_file="$workdir/devices-list.json"
   local warn_list_file="$workdir/warn-list.json"
   local err_list_file="$workdir/err-list.json"
+  local run_list_file="$workdir/run-list.json"
   local vol_list_file="$workdir/vol-list.json"
 
   echo
@@ -671,9 +679,11 @@ run_server_health_check() {
   local needs_cleaning_count=0
   local warning_count=0
   local error_count=0
+  local running_count=0
   local appendable_count=0
   local readonly_count=0
   local full_count=0
+  local recyclable_count=0
   local total_error_count=0
   local plan_total_count=0
   local archive_plan_count=0
@@ -683,6 +693,7 @@ run_server_health_check() {
   local devices_json='[]'
   local warnings_json='[]'
   local errors_json='[]'
+  local running_json='[]'
   local volumes_json='[]'
   local jukeboxes_json='[]'
   local licence_json='[]'
@@ -894,6 +905,56 @@ PY
 )"
   fi
 
+  # ── Running jobs ──────────────────────────────────────────────────────────
+  if (( RUN_RUNNING == 1 && connectivity_reachable == 1 )); then
+    curl_request "GET" "$base_url/general/jobs" "$run_list_file" -H "filter: running"
+    running_count="$(json_count_ids "$run_list_file" "jobs")"
+    : > "$workdir/running.ndjson"
+    : > "$running_csv"
+    echo "Job ID,Label,Status,Completion,Run At,Error" > "$running_csv"
+    while IFS= read -r job_id; do
+      local jfile="$workdir/run-job-${job_id}.json"
+      curl_request "GET" "$base_url/general/jobs/${job_id}" "$jfile"
+      local label status completion runat err
+      label="$(json_get "$jfile" "label")"
+      status="$(json_get "$jfile" "status")"
+      completion="$(json_get "$jfile" "completion")"
+      runat="$(json_get "$jfile" "runat")"
+      err="$(json_get "$jfile" "error")"
+
+      python3 - "$job_id" "$label" "$status" "$completion" "$runat" "$err" >> "$workdir/running.ndjson" <<'PY'
+import json, sys
+job = {
+    "jobID": sys.argv[1],
+    "label": sys.argv[2] if sys.argv[2] else None,
+    "status": sys.argv[3] if sys.argv[3] else None,
+    "completion": sys.argv[4] if sys.argv[4] else None,
+    "runat": sys.argv[5] if sys.argv[5] else None,
+    "error": sys.argv[6] if sys.argv[6] else None,
+}
+print(json.dumps(job, separators=(',', ':')))
+PY
+      python3 - "$job_id" "$label" "$status" "$completion" "$runat" "$err" >> "$running_csv" <<'PY'
+import csv, sys
+row = [sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]]
+w = csv.writer(sys.stdout, lineterminator='\n')
+w.writerow(row)
+PY
+    done < <(json_ids_to_lines "$run_list_file" "jobs")
+
+    running_json="$(python3 - "$workdir/running.ndjson" <<'PY'
+import json, sys
+arr = []
+with open(sys.argv[1], 'r', encoding='utf-8') as f:
+    for line in f:
+        line = line.strip()
+        if line:
+            arr.append(json.loads(line))
+print(json.dumps(arr, separators=(',', ':')))
+PY
+)"
+  fi
+
   if (( RUN_WARNINGS == 1 || RUN_ERRORS == 1 )); then
     python3 - "$workdir/warnings.ndjson" "$workdir/errors.ndjson" "$all_jobs_csv" <<'PY'
 import csv
@@ -984,9 +1045,10 @@ PY
       total_error_count=$((total_error_count + vol_errors))
 
       case "$(to_lower "$mode")" in
-        appendable) appendable_count=$((appendable_count + 1)) ;;
-        readonly)   readonly_count=$((readonly_count + 1)) ;;
-        full)       full_count=$((full_count + 1)) ;;
+        appendable)  appendable_count=$((appendable_count + 1)) ;;
+        readonly)    readonly_count=$((readonly_count + 1)) ;;
+        full)        full_count=$((full_count + 1)) ;;
+        recyclable)  recyclable_count=$((recyclable_count + 1)) ;;
         *) ;;
       esac
 
@@ -1050,6 +1112,43 @@ with open(sys.argv[1], 'r', encoding='utf-8') as f:
 print(json.dumps(arr, separators=(',', ':')))
 PY
 )"
+
+    # ── Recyclable Backup Volumes CSV ──
+    python3 - "$workdir/volumes.ndjson" "$recyclable_backup_csv" <<'PY'
+import csv, json, sys
+
+ndjson_path, out_path = sys.argv[1], sys.argv[2]
+rows = []
+with open(ndjson_path, 'r', encoding='utf-8') as f:
+    for line in f:
+        line = line.strip()
+        if not line:
+            continue
+        obj = json.loads(line)
+        mode = (obj.get("mode") or "").lower()
+        usage = (obj.get("usage") or "").lower()
+        if mode == "recyclable" and usage == "backup":
+            rows.append(obj)
+
+with open(out_path, 'w', encoding='utf-8', newline='') as f:
+    w = csv.writer(f, lineterminator='\n')
+    w.writerow(["Volume ID", "Label", "Barcode", "Location", "State", "Media Type",
+                 "Used Size (Human)", "Total Size (Human)", "Last Used", "Use Count", "Error Count"])
+    for obj in rows:
+        w.writerow([
+            obj.get("volumeID") or "",
+            obj.get("label") or "",
+            obj.get("barcode") or "",
+            obj.get("location") or "",
+            obj.get("state") or "",
+            obj.get("mediatype") or "",
+            obj.get("usedHuman") or "",
+            obj.get("totalHuman") or "",
+            obj.get("dateused") or "",
+            obj.get("usecount") if obj.get("usecount") is not None else "",
+            obj.get("totalErrors") if obj.get("totalErrors") is not None else "",
+        ])
+PY
   fi
 
   # ── Jukeboxes ─────────────────────────────────────────────────────────────
@@ -1478,14 +1577,14 @@ PY
     "$ALIAS" "$HOST" "$PORT" "$USERNAME" "$API_VERSION" "$USE_HTTPS" \
     "$hostname" "$lexxvers" "$platform" "$uptime" \
     "$connectivity_captured_at" "$connectivity_reachable" "$connectivity_response_ms" "$(format_uptime "$uptime")" \
-    "$needs_cleaning_count" "$warning_count" "$error_count" \
-    "$appendable_count" "$readonly_count" "$full_count" "$total_error_count" \
+    "$needs_cleaning_count" "$warning_count" "$error_count" "$running_count" \
+    "$appendable_count" "$readonly_count" "$full_count" "$recyclable_count" "$total_error_count" \
     "$needs_cleaning_text" \
-    "$devices_json" "$warnings_json" "$errors_json" "$volumes_json" \
+    "$devices_json" "$warnings_json" "$errors_json" "$running_json" "$volumes_json" \
     "$jukeboxes_json" "$licence_json" "$plans_json" \
     "$jukebox_count" "$licence_alert_count" "$licence_warn_count" \
     "$plan_total_count" "$archive_plan_count" "$backup_plan_count" "$sync_plan_count" \
-    "$RUN_SERVER_INFO" "$RUN_DEVICES" "$RUN_WARNINGS" "$RUN_ERRORS" \
+    "$RUN_SERVER_INFO" "$RUN_DEVICES" "$RUN_WARNINGS" "$RUN_ERRORS" "$RUN_RUNNING" \
     "$RUN_VOLUMES" "$RUN_JUKEBOXES" "$RUN_LICENCE" "$RUN_PLANS" <<'PY'
 import json, sys, datetime
 (
@@ -1493,13 +1592,14 @@ import json, sys, datetime
  alias, host, port, username, api_version, use_https,
  hostname, lexxvers, platform, uptime,
  connectivity_captured_at, connectivity_reachable, connectivity_response_ms, uptime_human,
- clean_count, warn_count, err_count, app_count, ro_count, full_count, total_errs,
+ clean_count, warn_count, err_count, running_count,
+ app_count, ro_count, full_count, recyclable_count, total_errs,
  clean_text,
- devices_json, warnings_json, errors_json, volumes_json,
+ devices_json, warnings_json, errors_json, running_json, volumes_json,
  jukeboxes_json, licence_json, plans_json,
  jukebox_count, lic_alert, lic_warn,
  plan_total, archive_count, backup_count, sync_count,
- run_info, run_dev, run_warn, run_err, run_vol, run_jb, run_lic, run_plans
+ run_info, run_dev, run_warn, run_err, run_running, run_vol, run_jb, run_lic, run_plans
 ) = sys.argv[1:]
 
 def to_int(x):
@@ -1529,6 +1629,7 @@ obj = {
         "devices":          run_dev  == '1',
         "warnings":         run_warn == '1',
         "errors":           run_err  == '1',
+        "running":          run_running == '1',
         "volumes":          run_vol  == '1',
         "jukeboxes":        run_jb   == '1',
         "licenceResources": run_lic  == '1',
@@ -1546,9 +1647,11 @@ obj = {
         "needsCleaningCount":  to_int(clean_count),
         "warningCount":        to_int(warn_count),
         "errorCount":          to_int(err_count),
+        "runningCount":        to_int(running_count),
         "appendableCount":     to_int(app_count),
         "readonlyCount":       to_int(ro_count),
         "fullCount":           to_int(full_count),
+        "recyclableCount":     to_int(recyclable_count),
         "volumeTotalErrors":   to_int(total_errs),
         "jukeboxCount":        to_int(jukebox_count),
         "licenceAlertCount":   to_int(lic_alert),
@@ -1561,6 +1664,7 @@ obj = {
     "devices":          from_json(devices_json),
     "warnings":         from_json(warnings_json),
     "errors":           from_json(errors_json),
+    "running":          from_json(running_json),
     "volumes":          from_json(volumes_json),
     "jukeboxes":        from_json(jukeboxes_json),
     "licenceResources": from_json(licence_json),
@@ -1598,6 +1702,9 @@ PY
   if (( RUN_ERRORS == 1 )); then
     echo "  Error jobs:   ${error_count}"
   fi
+  if (( RUN_RUNNING == 1 )); then
+    echo "  Running jobs: ${running_count}"
+  fi
   if (( RUN_WARNINGS == 1 || RUN_ERRORS == 1 )); then
     local all_job_count
     all_job_count="$(python3 - "$all_jobs_csv" <<'PY'
@@ -1614,7 +1721,7 @@ PY
     echo "  All job results: ${all_job_count}"
   fi
   if (( RUN_VOLUMES == 1 )); then
-    echo "  Volume modes: appendable=${appendable_count}, readonly=${readonly_count}, full=${full_count}"
+    echo "  Volume modes: appendable=${appendable_count}, readonly=${readonly_count}, full=${full_count}, recyclable=${recyclable_count}"
     if (( total_error_count > 0 )); then
       echo "  [WARN]  Volume tape errors detected: ${total_error_count} total hard/soft read+write errors across all volumes"
     else
@@ -1665,12 +1772,16 @@ PY
   echo "  - $connectivity_csv"
   if (( RUN_VOLUMES == 1 )); then
     [[ -f "$volumes_csv" ]] && echo "  - $volumes_csv"
+    [[ -f "$recyclable_backup_csv" ]] && echo "  - $recyclable_backup_csv"
   fi
   if (( RUN_WARNINGS == 1 )); then
     [[ -f "$warnings_csv" ]] && echo "  - $warnings_csv"
   fi
   if (( RUN_ERRORS == 1 )); then
     [[ -f "$errors_csv" ]] && echo "  - $errors_csv"
+  fi
+  if (( RUN_RUNNING == 1 )); then
+    [[ -f "$running_csv" ]] && echo "  - $running_csv"
   fi
   if (( RUN_WARNINGS == 1 || RUN_ERRORS == 1 )); then
     [[ -f "$all_jobs_csv" ]] && echo "  - $all_jobs_csv"
