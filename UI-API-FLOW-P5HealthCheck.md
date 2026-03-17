@@ -1,6 +1,6 @@
 # P5 Health Check — UI Flow & REST API Mapping
 
-Maps every user-visible action in P5 Health Check (v1.3) to the underlying P5 REST API calls, then lists untapped endpoints from `P5_openapi.json` (API v7.1.0+) and the tested calls in `P5 rest API example.json` that are not yet implemented.
+Maps every user-visible action in P5 Health Check (v1.7) to the underlying P5 REST API calls, then lists untapped endpoints from `P5_openapi.json` (API v7.1.0+) and the tested calls in `P5 rest API example.json` that are not yet implemented.
 
 Base URL: `http(s)://{host}:{port}/rest/{apiVersion}/`
 Auth: HTTP Basic (username + password from Keychain)
@@ -16,7 +16,8 @@ Every request is `GET` with `Accept: application/json`. Additional filter parame
 Both buttons trigger `HealthMonitor.refresh()` or `HealthMonitor.refreshAll()`.
 Each server fetch runs these calls concurrently (`async let` for core data; non-fatal `try?` for jukeboxes and licence):
 
-Note: in v1.3, `P5MenuBar` uses `Refresh All` only; `Refresh Selected` remains available in `P5Window`.
+Note: `P5MenuBar` uses `Refresh All` only; `Refresh Selected` remains available in `P5Window`.
+Running jobs are fetched non-fatally (`try?`) — if the call fails, the snapshot still succeeds with an empty running list.
 
 | UI Section Populated | REST Call | Headers | Source method |
 |---|---|---|---|
@@ -25,7 +26,8 @@ Note: in v1.3, `P5MenuBar` uses `Refresh All` only; `Refresh Selected` remains a
 | Devices — cleaning status per device | `GET /general/devices/{deviceID}` | — | `fetchDevice()` |
 | Jobs — warning job IDs | `GET /general/jobs` | `filter: warning`, `lastdays: N` | `fetchWarningJobs()` |
 | Jobs — error job IDs | `GET /general/jobs` | `filter: failed`, `lastdays: N` | `fetchErrorJobs()` |
-| Jobs — detail per warning/error job | `GET /general/jobs/{jobID}` | — | `fetchJob()` |
+| Jobs — running job IDs | `GET /general/jobs` | `filter: running` | `fetchRunningJobs()` |
+| Jobs — detail per warning/error/running job | `GET /general/jobs/{jobID}` | — | `fetchJob()` |
 | Jobs — protocol text per job | `GET /general/jobs/{jobID}/protocol` | `format: json` | `fetchJobProtocolSummary()` |
 | Volumes — volume ID list | `GET /general/volumes` | — | `fetchVolumes()` |
 | Volumes — detail per volume (incl. tape health fields) | `GET /general/volumes/{volumeID}` | — | `fetchVolume()` |
@@ -71,12 +73,13 @@ Same API calls as Refresh All. A SQLite scheduler lease prevents concurrent refr
   - `All Job Results`
   - `Error Job Results`
   - `Warning Job Results`
+  - `Running Job Results`
   - `All Job Results` merges warning + error jobs and de-duplicates by `jobID`.
 
-### Add / Edit / Delete Server (sidebar)
+### Add / Edit / Delete Server (Settings sheet → Servers)
 **No API call** — operates only on local `HealthSettings` (UserDefaults + Keychain).
 
-### Import Servers JSON / Export Servers JSON (sidebar)
+### Import Servers JSON / Export Servers JSON (Settings sheet → Servers)
 **No API call** — reads/writes a local JSON file (`P5Servers.json`).
 
 ### Settings sheet (Data Fetch / Auto Refresh / History)
@@ -211,7 +214,7 @@ Based on the tested calls and OpenAPI spec, these additions would add the most v
 ### Medium value / medium effort
 
 4. **Active job progress** — `GET /general/jobs/{id}/report`
-   Poll for currently running jobs and show live progress. Requires a separate polling loop distinct from the snapshot refresh.
+   > **✅ Partially implemented in v1.7:** Running jobs are now fetched via `GET /general/jobs` with `filter: running` and shown in both apps and the CLI. Live progress polling via `/report` endpoint remains a future enhancement.
 
 5. **Volume → Jobs drill-down** — `GET /general/volumes/{volumeID}/jobs`
    Show which jobs wrote to a selected tape — useful for tracing when a tape was last used and by what plan.
@@ -240,10 +243,3 @@ Scheme:    http or https (controlled by ServerConfig.useHTTPS)
 Auth:      Authorization: Basic base64("{username}:{password}")
 Accept:    application/json
 ```
-
-`P5APIClient.request(path:headers:)` builds the URL from `ServerConfig.baseURL` and appends the path. Additional filter/format parameters are passed as standard HTTP headers (not query parameters), consistent with the P5 API convention.
-
----
-
-*Document based on P5 Health Check v1.3 and P5 REST API v7.1.0+*
-*Source files: `P5_openapi.json`, `P5 rest API example.json`*
