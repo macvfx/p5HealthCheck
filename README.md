@@ -1,5 +1,7 @@
 # P5 Health Check Overview
 
+**Current Mac release:** P5Window and P5MenuBar v1.7.1 (build 3)
+
 ## Purpose
 P5 Health Check provides quick operational visibility into one or more Archiware P5 servers via the P5 REST API.
 
@@ -86,7 +88,7 @@ Key features:
 
 All three tools share the same JSON format. The default filename is `P5Servers.json`.
 
-**Auto-detection at launch (apps)** — servers are imported silently on startup if either file is found:
+**Discovery and review at launch (apps)** — either file is detected at startup, but no server is added until the user reviews the source and connection details:
 
 | File | Location |
 |---|---|
@@ -100,10 +102,10 @@ All three tools share the same JSON format. The default filename is `P5Servers.j
 {
   "servers": [
     {
-      "alias": "P5 Primary",
-      "host": "p5-primary.local",
+      "alias": "Example Primary",
+      "host": "p5-primary.example.invalid",
       "port": "8000",
-      "username": "admin",
+      "username": "<username>",
       "apiVersion": "v1",
       "useHTTPS": false
     }
@@ -112,6 +114,8 @@ All three tools share the same JSON format. The default filename is `P5Servers.j
 ```
 
 Passwords are never stored in the file. Enter them in each app's Settings (saved to Keychain) or allow the CLI to save them on first interactive run.
+
+In P5Window and P5MenuBar, choose **Add New Servers**, **Not Now**, or **Ignore This File Version** from the launch review. Accepted and ignored revisions are remembered by SHA-256 fingerprint. Connections are matched by host, port, username, API version, and HTTP/HTTPS mode; aliases may be changed without making the same connection appear new.
 
 **P5Window** — `Import Servers JSON` and `Export Servers JSON` buttons in the server sidebar.
 
@@ -122,8 +126,8 @@ Exported files default to `P5Servers.json` and can be shared with any other P5 A
 
 ## Typical Workflow
 1. Place `P5Servers.json` in `/Users/Shared/` (or add servers manually in app settings).
-2. Launch either app — servers are imported automatically.
-3. Enter passwords in Settings (saved to Keychain).
+2. Launch either app and review any newly discovered connections.
+3. Choose which connections to add, then enter passwords in Settings (saved to Keychain).
 4. Use the menu bar app for quick daily monitoring.
 5. Use the window app for deeper review, history, and CSV exports.
 6. Use the CLI for scripted/scheduled runs or integration with alerting pipelines.

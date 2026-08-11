@@ -76,6 +76,7 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 2. Select a JSON file — supports `{ "servers": [ ... ] }` or `[ ... ]` format.
 3. Imported servers are added without passwords; duplicates are skipped.
 4. Edit each new server once to enter its password (saved to Keychain).
+5. Exact connections are matched by `host + port + username + apiVersion + useHTTPS`; changing the editable alias does not create a new identity.
 
 ### Export
 1. Click `Export Servers JSON` in the server sidebar.
@@ -83,8 +84,8 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 3. The file contains all server details except passwords.
 4. Use the exported file to populate any other P5 Archive app.
 
-### Auto-detection at launch
-Place `P5Servers.json` (or `P5HealthCheckServers.json`) in `/Users/Shared/` or `~/Documents/` and the app imports new servers automatically on next launch.
+### Discovery and review at launch
+Place `P5Servers.json` (or `P5HealthCheckServers.json`) in `/Users/Shared/` or `~/Documents/`. On next launch, the app shows the source and connection details before adding anything. Choose **Add New Servers**, **Not Now**, or **Ignore This File Version**. Accepted and ignored revisions are remembered by SHA-256 fingerprint.
 
 ## Tips
 - Increase `Max volume details` (in Settings) when you need broader volume coverage.

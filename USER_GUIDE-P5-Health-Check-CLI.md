@@ -107,18 +107,18 @@ The script uses the same JSON format as the Mac apps. Default filename is `P5Ser
 {
   "servers": [
     {
-      "alias": "P5 Primary",
-      "host": "p5-primary.local",
+      "alias": "Example Primary",
+      "host": "p5-primary.example.invalid",
       "port": "8000",
-      "username": "admin",
+      "username": "<username>",
       "apiVersion": "v1",
       "useHTTPS": false
     },
     {
-      "alias": "P5 DR",
-      "host": "10.20.30.40",
+      "alias": "Example Secondary",
+      "host": "p5-secondary.example.invalid",
       "port": "8000",
-      "username": "admin",
+      "username": "<username>",
       "apiVersion": "v1",
       "useHTTPS": false
     }
@@ -141,9 +141,9 @@ Passwords are never stored in the file. The script reads them from Keychain or p
 
 ## Non-Interactive Mode (`-n`)
 - Runs once without any prompts.
-- All 8 checks run automatically.
+- All 9 checks run automatically.
 - Server selection: uses hardcoded values if set in script, otherwise uses the first server from the config file.
-- Password: uses `HARDCODED_PASSWORD` if set, otherwise reads from Keychain. If missing, exits with an error.
+- Credential lookup: uses the configured password override if set, otherwise reads from Keychain. If missing, exits with an error.
 - A connectivity CSV is always produced for the selected server, even if the server is unreachable.
 - If the server is down, the script records `P5 Down`, writes the connectivity CSV + JSON report, and skips the detailed API checks for that run.
 

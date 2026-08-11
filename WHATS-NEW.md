@@ -1,8 +1,20 @@
-# What's New — P5 Health Check v1.0 to v1.7
+# What's New — P5 Health Check v1.0 to v1.7.1
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through the current v1.7 / v1.2 candidate.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.7.1 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.7.1 (Mac) / v1.2.1 (iPhone) — 2026-08-10
+
+### Reviewed Server Discovery
+
+- Standard and legacy server JSON files are detected without silently adding connections.
+- The review sheet shows the source and connection details before any change is made.
+- Users can add new connections, defer, or ignore that exact file revision.
+- Accepted and ignored revisions are remembered by SHA-256 fingerprint.
+- Connection identity excludes the editable alias, so renaming a server locally does not invalidate it.
 
 ---
 
@@ -50,7 +62,7 @@ For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
 ### Import Duplicate Safety (All Apps)
 
 - Manual JSON import now warns when duplicates are detected and imports only new servers if you continue.
-- Launch-time auto-import silently skips exact duplicates.
+- At the time of v1.6, launch-time auto-import silently skipped exact duplicates. v1.7.1 replaces this behavior with explicit review.
 - All three apps share the same identity rule: `alias + host + port + username + apiVersion + useHTTPS`.
 - Shared import-preview support in `P5HealthCore` drives the same duplicate warning flow across macOS and iOS.
 
