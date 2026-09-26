@@ -1,8 +1,22 @@
-# What's New — P5 Health Check v1.0 to v1.7.1
+# What's New — P5 Health Check v1.0 to v1.8.0
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.7.1 and iPhone v1.2.1.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.8.0 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.8.0 (Mac) — 2026-09-24
+
+### Live Monitor and Recent Archives
+
+- Choose how often the live monitor refreshes: 30 seconds, 1 minute, 5 minutes or 10 minutes, shared by both Mac apps.
+- **Active** and **Recent Archives** monitor tabs. Recent Archives is a read-only overview of finished archive jobs with client, plan, pool, size, time and paths. It is not durable job history and does not cover restores or backups.
+- A steadier menu-bar status: cleaning first, and incomplete or stale observations show as unavailable.
+- Native Settings, Help and What's New windows in the main app, an in-app guide, and a version and build footer.
+- Refreshed dashboard, Media & Drives, Plans, History and Licenses layouts.
+- **Refresh All** shows each server as soon as it answers, so one slow server no longer holds up the rest.
+- HTTPS locks beside server names, and an empty active-job list is no longer reported as a connection error.
 
 ---
 
