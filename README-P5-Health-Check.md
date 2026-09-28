@@ -57,7 +57,7 @@ See `Documents/CHANGELOG-P5-Health-Check.md` for the full feature comparison tab
 
 ## Requirements
 - macOS 13.5+ for `P5Window`.
-- macOS 14+ for `P5MenuBar`.
+- macOS 14+ for `P5MenuBar`. <!-- claim-check: allow -->
 - Future compatibility policy: if a fix requires macOS 14 APIs, both apps may be aligned to macOS 14+. <!-- claim-check: allow -->
 - Reachable P5 REST endpoint.
 - Valid username/password per server.
