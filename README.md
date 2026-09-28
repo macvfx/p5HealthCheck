@@ -1,6 +1,6 @@
 # P5 Health Check Overview
 
-**Current Mac release:** P5Window and P5MenuBar v1.8.0 (build 7)
+**Current Mac release:** P5Window and P5MenuBar v1.9.0 (build 8)
 
 ## Purpose
 P5 Health Check provides quick operational visibility into one or more Archiware P5 servers via the P5 REST API.

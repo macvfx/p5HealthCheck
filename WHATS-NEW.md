@@ -1,8 +1,21 @@
-# What's New — P5 Health Check v1.0 to v1.8.0
+# What's New — P5 Health Check v1.0 to v1.9.0
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.8.0 and iPhone v1.2.1.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.9.0 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.9.0 (Mac) — 2026-09-28
+
+### Running jobs, status colours
+
+- The live monitor lists **running jobs only** by default. A **Show queued jobs** setting (off by default, remembered) adds queued and pending jobs, with a note showing how many are hidden.
+- A window status header (Drives, P5 Server, Uptime, Running jobs) uses one traffic-light scheme: green is fine, orange needs a look, red needs action.
+- **All Servers** shows one coloured row per server; click a row to select it.
+- Updated in-app Help and What's New.
+
+The iPhone app is not part of this release.
 
 ---
 
