@@ -8,14 +8,10 @@ For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
 
 ## v1.9.1 (Mac) — 2026-09-28
 
-### Fixed: a stuck refresh lock
-
-- Quitting either Mac app used to sometimes leave the other app showing "Another P5 Health Check instance is already refreshing" for up to 15 minutes. Quitting now releases the lock immediately; an abandoned lock (a crash or force-quit) clears itself within about a minute.
-- This only ever affected the full inventory refresh (Refresh All, and the automatic inventory schedule) shared by both apps — the Monitor tab's live jobs and Recent Archives were never affected.
-
----
-
-## v1.9.0 (Mac) — 2026-09-28
+Replaces v1.9.0, which is withdrawn: it shipped with the refresh-lock bug fixed
+below, so an app quit or crash could lock the other app out of Refresh All for
+up to 15 minutes. This is the first build to actually use the running-jobs
+monitor comfortably with both apps open.
 
 ### Running jobs, status colours
 
@@ -23,6 +19,11 @@ For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
 - A window status header (Drives, P5 Server, Uptime, Running jobs) uses one traffic-light scheme: green is fine, orange needs a look, red needs action.
 - **All Servers** shows one coloured row per server; click a row to select it.
 - Updated in-app Help and What's New.
+
+### Fixed: a stuck refresh lock
+
+- Quitting either Mac app used to sometimes leave the other app showing "Another P5 Health Check instance is already refreshing" for up to 15 minutes. Quitting now releases the lock immediately; an abandoned lock (a crash or force-quit) clears itself within about a minute.
+- This only ever affected the full inventory refresh (Refresh All, and the automatic inventory schedule) shared by both apps — the Monitor tab's live jobs and Recent Archives were never affected.
 
 The iPhone app is not part of this release.
 
