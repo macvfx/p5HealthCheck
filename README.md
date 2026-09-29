@@ -1,6 +1,6 @@
 # P5 Health Check Overview
 
-**Current Mac release:** P5Window and P5MenuBar v1.9.1 (build 9)
+**Current Mac release:** P5Window and P5MenuBar v1.10.0 (build 10)
 
 ## Purpose
 P5 Health Check provides quick operational visibility into one or more Archiware P5 servers via the P5 REST API.
@@ -31,6 +31,7 @@ Key features:
 - Live monitor with a choosable cadence (30 seconds, 1, 5 or 10 minutes), an **Active** tab and a read-only **Recent Archives** tab (an on-demand archive overview, not durable job history).
 - Native Settings, Help and What's New windows, and an in-app guide.
 - Historical sections for job issues and volume changes (SQLite-backed).
+- **Drive cleaning log** (Media & Drives): every change to a drive's needs-cleaning flag is recorded, manual cleanings are logged with the cleaning tape used, and the outcome is worked out from the flag afterwards. Per-drive totals, cleaning tape wear counts, a frequent-cleaning warning, charts over time, and a text or CSV export are included.
 - Export menu options:
   - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)
   - plan markdown export (All Plans / Archive Plans / Backup Plans / Sync Plans)
@@ -42,6 +43,7 @@ Key features:
 Always-available compact monitor from the menu bar.
 
 Key features:
+- Server uptime in colour (green up to 24 hours, orange up to 48, red beyond) and the app version in the footer.
 - Popover status for all configured servers.
 - Multi-server summary at top (when multiple servers are configured).
 - Per-server group: Drive status (green/red), uptime, job warn/error counts, tape mode counts, jukebox pills.

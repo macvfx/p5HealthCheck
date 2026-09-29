@@ -31,6 +31,8 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 - Scroll appears on the right only if report content exceeds available popover height in the current mode.
 - Jukebox status per server: volumes loaded / slot count per library.
 - Licence warnings when any resource is depleted or low.
+- Each server shows its uptime in colour: green up to 24 hours, orange up to 48 hours, red beyond, with how long ago it was read (from the last inventory or reachability check).
+- The footer shows the app version and build in light grey.
 - Buttons: `Refresh All`, `Settings`.
 - Footer actions: `Open Main App` (opens `P5Window`) and `Quit`.
 - Menu bar icon flashes red when any configured server reports a cleaning-required drive.

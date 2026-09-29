@@ -15,9 +15,11 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 ## Main Areas
 - **Server list** (sidebar): add/edit/duplicate/delete server configs; import/export as JSON.
 - **Refresh Selected / Refresh All** (sidebar buttons): fetch latest health data for the selected server or all servers.
-- **Settings** (sidebar button): opens a sheet with Data Fetch, Auto Refresh, connectivity uptime-check interval, and History retention controls.
+- **Settings** (sidebar button): opens a sheet with Data Fetch, Auto Refresh, connectivity uptime-check interval, Drive Cleaning warning limits, a Menu Bar App option (open the menu bar app when this app quits), and History retention controls.
 - **Server info**: hostname, Lexx version, platform, uptime, and last checked timestamp.
-- **Devices**: whether drive cleaning is needed.
+- **Devices**: whether drive cleaning is needed, with a line per drive showing how often it was flagged and cleaned, and an optional label (for example "LTO-8, rack 2").
+- **Cleaning Log** (Media & Drives, under Devices): the flag history and your manual cleanings for the selected server. **Log Cleaning…** records a cleaning with its cleaning tape and notes; the outcome is read from the drive's flag afterwards. When a flag clears with no cleaning logged, the row asks "was the drive cleaned?" and offers **Log cleaning…** or **Not cleaned**. Charts show flags and cleanings per month and how long each flag stayed up, and **Export** writes a text receipt or CSV. Only cleanings you log are counted, and history starts when the app first saw the drive.
+- **Cleaning Tapes**: uses counted per barcode (or label) across all servers. Rated uses default to 50 and can be changed per tape; a tape turns orange from 80% and red at its rating. A drive flagged 3 times in 14 days shows a frequent-cleaning warning; both numbers are set in Settings under Drive Cleaning.
 - **Jukeboxes** (shown after Devices, if configured): tape library name, slot count, and volumes-loaded count per library.
 - **Licence** (shown after Jukeboxes, if available): collapsible section (click triangle to expand). Resources grouped by urgency — depleted (red "None"), low (orange count), normal (green count), unlimited (single "Unlimited" row). Header shows badge counts for depleted and low resources so you can spot issues without opening the section.
 - **Volumes panel** (shown after Licence, collapsible):

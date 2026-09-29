@@ -1,8 +1,33 @@
-# What's New — P5 Health Check v1.0 to v1.9.1
+# What's New — P5 Health Check v1.0 to v1.10.0
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.9.1 and iPhone v1.2.1.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.10.0 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.10.0 (Mac) — 2026-09-29
+
+### Drive cleaning log
+
+- P5 only reports whether a drive needs cleaning, so Media & Drives now keeps a **cleaning log**: every change to a drive's flag is recorded, and you can log a manual cleaning with the drive, time, cleaning tape and notes. Whether it worked is read from the flag afterwards.
+- When a flag clears and no cleaning was logged, the log asks **"was the drive cleaned?"**. Log the cleaning, or mark it not cleaned if the flag cleared by itself.
+- Each drive shows how often it was flagged and cleaned, with an optional label such as "LTO-8, rack 2". Cleaning tapes are counted per barcode (or a label, if there is none) with a wear warning from 80% of their rated uses.
+- A drive flagged 3 times in 14 days gets a frequent-cleaning warning; both numbers can be changed in Settings.
+- Charts of flags and cleanings per month and a per-drive timeline, plus a text receipt or CSV export.
+
+### Menu bar
+
+- Each server shows its uptime in colour, and the app version appears in the footer.
+- A new setting in the window app (off by default) opens the menu bar app when the window app quits.
+- **Uptime colours changed** in both apps: green up to 24 hours, orange up to 48 hours, red beyond 48 hours. Previously orange ran to 7 days.
+
+### Fixed
+
+- A failed refresh now names the server and shows only for that server, instead of a nameless red banner on every workspace.
+- The Auto Refresh row in the Settings sheet wraps instead of being cut off.
+
+The iPhone app is not part of this release.
 
 ---
 
