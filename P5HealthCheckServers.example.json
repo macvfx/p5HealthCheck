@@ -11,7 +11,7 @@
     },
     {
       "alias": "P5 DR",
-      "host": "10.20.30.40",
+      "host": "192.0.2.10",
       "port": "8000",
       "username": "admin",
       "apiVersion": "v1",
