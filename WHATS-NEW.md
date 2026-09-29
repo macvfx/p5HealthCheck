@@ -1,8 +1,17 @@
-# What's New — P5 Health Check v1.0 to v1.9.0
+# What's New — P5 Health Check v1.0 to v1.9.1
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.9.0 and iPhone v1.2.1.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.9.1 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.9.1 (Mac) — 2026-09-28
+
+### Fixed: a stuck refresh lock
+
+- Quitting either Mac app used to sometimes leave the other app showing "Another P5 Health Check instance is already refreshing" for up to 15 minutes. Quitting now releases the lock immediately; an abandoned lock (a crash or force-quit) clears itself within about a minute.
+- This only ever affected the full inventory refresh (Refresh All, and the automatic inventory schedule) shared by both apps — the Monitor tab's live jobs and Recent Archives were never affected.
 
 ---
 
