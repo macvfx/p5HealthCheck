@@ -1,8 +1,27 @@
-# What's New — P5 Health Check v1.0 to v1.10.0
+# What's New — P5 Health Check v1.0 to v1.11.0
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.10.0 and iPhone v1.2.1.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.11.0 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.11.0 (Mac) — 2026-10-08
+
+### Archive LTO inventory and exports
+
+- One permanent Archive LTO card replaces the old outer Volumes disclosure and duplicate legacy presentation.
+- All, Appendable, Full, Read Only, and Loaded to Remove pills show counts and filter individual Archive + TAPE rows.
+- Tape rows expose the P5 evidence available for barcode/label, mode, online/enabled state, location, capacity, last use, and jukebox membership.
+- A visible Partial state warns when volume-detail or jukebox-membership coverage is incomplete.
+- New CSV exports provide the current filtered view, Full/Read Only removal candidates, and remaining appendable archive media.
+
+### Cleaning tapes per server/site
+
+- Cleaning cartridges, current cycle baselines, rated maximums, and retired state now belong to the selected P5 server/site.
+- Existing settings are migrated conservatively and are not copied to unrelated servers without matching history.
+
+The volume inventory and exports are read-only. This release does not change P5 volume modes. The iPhone app is not part of this release.
 
 ---
 

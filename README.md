@@ -1,6 +1,6 @@
 # P5 Health Check Overview
 
-**Current Mac release:** P5Window and P5MenuBar v1.10.0 (build 10)
+**Current Mac release:** P5Window and P5MenuBar v1.11.0 (build 11)
 
 ## Purpose
 P5 Health Check provides quick operational visibility into one or more Archiware P5 servers via the P5 REST API.
@@ -31,9 +31,11 @@ Key features:
 - Live monitor with a choosable cadence (30 seconds, 1, 5 or 10 minutes), an **Active** tab and a read-only **Recent Archives** tab (an on-demand archive overview, not durable job history).
 - Native Settings, Help and What's New windows, and an in-app guide.
 - Historical sections for job issues and volume changes (SQLite-backed).
-- **Drive cleaning log** (Media & Drives): every change to a drive's needs-cleaning flag is recorded, manual cleanings are logged with the cleaning tape used, and the outcome is worked out from the flag afterwards. Per-drive totals, cleaning tape wear counts, a frequent-cleaning warning, charts over time, and a text or CSV export are included.
+- **Drive cleaning log** (Media & Drives): every change to a drive's needs-cleaning flag is recorded, manual cleanings are logged with the cleaning tape used, and the outcome is worked out from the flag afterwards. Per-drive totals, cleaning tape wear counts, a frequent-cleaning warning, charts over time, and a text or CSV export are included. Cleaning cartridges, current cycle baselines, rated maximums, and retired state are kept per P5 server/site.
+- **Archive LTO inventory:** one card shows All, Appendable, Full, Read Only, and Loaded to Remove pills. Clicking a pill filters individual Archive + TAPE rows with barcode/label, mode, online/enabled state, location, capacity, last use, and jukebox membership when P5 supplies it. A **Partial** marker makes incomplete endpoint coverage explicit.
 - Export menu options:
   - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)
+  - operator-focused Archive LTO export (current filter / removal candidates / appendable inventory)
   - plan markdown export (All Plans / Archive Plans / Backup Plans / Sync Plans)
   - job result CSV export (All Job Results / Error Job Results / Warning Job Results)
 - Auto-refresh scheduler (manual / hourly / daily) for full API data refresh.

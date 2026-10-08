@@ -1,5 +1,7 @@
 # User Guide - P5MenuBar
 
+Applies to **1.11.0 (build 11)**; requires macOS 14 or later. <!-- claim-check: allow -->
+
 ## What It Is
 `P5MenuBar` is the compact monitoring app that runs in the macOS menu bar. It provides a fast, always-available health snapshot for one or more P5 servers without needing to open a full window.
 

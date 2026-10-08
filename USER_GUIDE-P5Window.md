@@ -1,5 +1,7 @@
 # User Guide - P5Window
 
+Applies to **1.11.0 (build 11)**; requires macOS 13.5 or later.
+
 ## What It Is
 `P5Window` is the full dashboard app for detailed health checks and volume analysis.
 
@@ -19,14 +21,16 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 - **Server info**: hostname, Lexx version, platform, uptime, and last checked timestamp.
 - **Devices**: whether drive cleaning is needed, with a line per drive showing how often it was flagged and cleaned, and an optional label (for example "LTO-8, rack 2").
 - **Cleaning Log** (Media & Drives, under Devices): the flag history and your manual cleanings for the selected server. **Log Cleaning…** records a cleaning with its cleaning tape and notes; the outcome is read from the drive's flag afterwards. When a flag clears with no cleaning logged, the row asks "was the drive cleaned?" and offers **Log cleaning…** or **Not cleaned**. Charts show flags and cleanings per month and how long each flag stayed up, and **Export** writes a text receipt or CSV. Only cleanings you log are counted, and history starts when the app first saw the drive.
-- **Cleaning Tapes**: uses counted per barcode (or label) across all servers. Rated uses default to 50 and can be changed per tape; a tape turns orange from 80% and red at its rating. A drive flagged 3 times in 14 days shows a frequent-cleaning warning; both numbers are set in Settings under Drive Cleaning.
+- **Cleaning Tapes**: each configured server/site owns its cleaning cartridges, current cycle baseline, rated maximum, and retired state. This prevents a tape recorded at one facility from appearing on unrelated servers. A tape turns orange from 80% and red at its rating. A drive flagged 3 times in 14 days shows a frequent-cleaning warning; both numbers are set in Settings under Drive Cleaning.
 - **Jukeboxes** (shown after Devices, if configured): tape library name, slot count, and volumes-loaded count per library.
 - **Licence** (shown after Jukeboxes, if available): collapsible section (click triangle to expand). Resources grouped by urgency — depleted (red "None"), low (orange count), normal (green count), unlimited (single "Unlimited" row). Header shows badge counts for depleted and low resources so you can spot issues without opening the section.
-- **Volumes panel** (shown after Licence, collapsible):
-  - Header stays visible when collapsed, with total volume count plus coloured pills for **Appendable** (green) / **Readonly** (orange) / **Full** (red).
-  - Total mode count chips: **Appendable** (green) / **Readonly** (orange) / **Full** (red) — colour matches urgency.
-  - Usage split by mode: Archive vs Backup counts for each mode.
-  - Volume series list: volumes grouped by label prefix and mode into compact range rows (e.g. `ProjectArchive.0001–0126 · Appendable · Archive`) with colour-coded mode badges, plus a secondary health line showing Last Used date, total Use Count, and Error Count (in orange if > 0).
+- **Archive LTO inventory** (shown after Licence):
+  - One permanent card replaces the former outer Volumes disclosure and duplicate legacy blocks.
+  - **All**, **Appendable**, **Full**, **Read Only**, and **Loaded to Remove** pills show counts and filter the individual Archive + TAPE rows.
+  - Each row can show ID/barcode/label, mode, online/enabled state, location, capacity, last use, and jukebox membership when returned by P5.
+  - **Loaded to Remove** means Full or Read Only media that P5 reports as loaded in a jukebox; it is an operator review list, not an automated eject instruction.
+  - **Partial** means the server did not provide complete volume-detail or jukebox-membership evidence, so counts and removal candidates may be incomplete.
+  - The view and its exports are read-only: version 1.11.0 does not change P5 volume modes.
 - **Plans** (collapsible, shown after Volumes): grouped by kind (Archive / Backup / Sync) with plan ID, description, enabled state, source/target endpoint details, and schedule rows when available.
 - **Jobs** (collapsible): combined Errors + Warnings section with live count badge in the header. Auto-opens when issues exist; can be manually collapsed at any time.
 - **Multi-server summary**: drive status + warning/error counts per server (shown when more than one server is configured).
@@ -58,7 +62,7 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
    - `Devices`: `Needs cleaning: Yes/No`
    - `Jukeboxes`: library ID · slot count · volumes loaded (hidden when no jukeboxes configured)
    - `Licence`: collapsible — click triangle to expand; depleted/low badge counts shown in header even when collapsed
-   - `Volumes`: disclosure section with header totals/pills, plus Archive/Backup split and grouped series list
+   - `Archive LTO`: click a status pill to filter individual tapes; check for a `Partial` coverage marker before using the count operationally
    - `Plans`: grouped Archive/Backup/Sync plan details — click triangle to collapse/expand
    - `Jobs`: combined Errors + Warnings — click the triangle to collapse/expand
    - `History`: click the triangle to expand — Action Required always visible inside, plus collapsible job and volume change logs
@@ -66,6 +70,9 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
    - **All Volumes** — full volume list (includes Last Used, Use Count, Error Count columns)
    - **Archive Tape Usage** — archive-usage volumes only
    - **Backup Tape Usage** — backup-usage volumes only
+   - **Archive LTO Current Filter** — exactly the rows currently selected by the pills
+   - **Archive LTO Removal Candidates** — Full or Read Only archive tapes, with loaded membership when available
+   - **Archive LTO Appendable Inventory** — remaining appendable archive tapes
    - **All Plans / Archive Plans / Backup Plans / Sync Plans** — markdown documentation export of configured plans
    - **All Job Results / Error Job Results / Warning Job Results** — job-result CSV exports
 7. Click `Settings` at the bottom of the sidebar to adjust Data Fetch, Auto Refresh, and History retention.
@@ -95,7 +102,7 @@ Place `P5Servers.json` (or `P5HealthCheckServers.json`) in `/Users/Shared/` or `
 - Use multi-server summary for quick comparison before drilling into one server.
 - Disclosure sections (History, Jobs, Recent Job Issues, Recent Volume Changes) all auto-open when new data arrives but can be collapsed manually at any time by clicking the triangle.
 - Licence section only appears if the P5 server returns licence resource data; it is silently hidden otherwise. `-1` free means Unlimited — those resources are grouped into one row at the bottom. `0` free means None (shown in red) — check with your P5 admin.
-- Volume mode count chips (Appendable / Readonly / Full) use traffic-light colours: green = healthy, orange = monitor, red = attention needed.
+- Archive LTO pills are both status counts and filters. A zero count is still useful evidence; `Partial` means it is not a complete inventory.
 - CSV exports include `Last Used`, `Use Count`, and `Error Count` columns for tape-health analysis.
 - Plan markdown exports provide filtered documentation sets: All Plans, Archive Plans, Backup Plans, and Sync Plans.
 - `Duplicate Selected` is the fastest way to create a near-copy when only host/IP, username, or password changes between environments.

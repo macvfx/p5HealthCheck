@@ -17,8 +17,11 @@ Both apps use the P5 REST API to surface health and tape status details from one
 - Job warning and failed job visibility.
 - Plans visibility: configured Archive / Backup / Sync plans.
 - Tape volume overview by mode (`Appendable`, `Readonly`, `Full`) with tape health stats (last used, use count, error count).
+- Operator-focused Archive LTO card with filter pills, individual tape rows, explicit partial-coverage state, and CSV exports for removal candidates and remaining appendable media.
+- Cleaning cartridge identity, current cycle baseline, rated maximum, and retirement state scoped to each configured server/site.
 - Export menu options (window app):
   - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)
+  - Archive LTO CSV export (current filtered view / removal candidates / appendable inventory)
   - plan markdown export (All / Archive / Backup / Sync)
   - job result CSV export (All / Error / Warning)
 - Multi-server refresh and quick comparison.
