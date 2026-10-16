@@ -141,3 +141,9 @@ Exported files default to `P5Servers.json` and can be shared with any other P5 A
 
 ## 2026 code.matx.ca - P5 Archive Tools for macOS & iOS
 [For feedback, reach out via GitHub](https://github.com/macvfx) and [Support this project by optional donation](https://www.paypal.com/ncp/payment/ZX52VNS49SRZA)
+
+## License
+
+Free to use for your own business or work, including on client jobs. You may not sell,
+redistribute or sublicense the software. The terms are the
+[PolyForm Internal Use License 1.0.0](LICENSE). Copies obtained earlier under Apache-2.0 keep that license.
