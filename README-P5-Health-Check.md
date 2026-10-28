@@ -17,7 +17,9 @@ Both apps use the P5 REST API to surface health and tape status details from one
 - Job warning and failed job visibility.
 - Plans visibility: configured Archive / Backup / Sync plans.
 - Tape volume overview by mode (`Appendable`, `Readonly`, `Full`) with tape health stats (last used, use count, error count).
-- Operator-focused Archive LTO card with filter pills, individual tape rows, explicit partial-coverage state, and CSV exports for removal candidates and remaining appendable media.
+- Operator-focused Archive LTO card with filter pills, individual tape rows, explicit partial-coverage state, and CSV exports for removal candidates and remaining appendable media. A removal candidate is a Full or Read Only tape currently in a jukebox or drive; offline media is excluded.
+- Demo Mode: flag a server in Add Server to answer from a built-in scenario (Healthy Fleet, Drive Needs Cleaning, Busy Archive Week, Index Discovery) instead of a real P5 install, with no credentials needed. Unrelated to the iPhone app's own App-Store-review demo mode.
+- Menu bar app now has its own Help button, showing the same guide as the window app's Help menu.
 - Cleaning cartridge identity, current cycle baseline, rated maximum, and retirement state scoped to each configured server/site.
 - Export menu options (window app):
   - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)

@@ -1,6 +1,6 @@
 # User Guide - P5Window
 
-Applies to **1.11.0 (build 11)**; requires macOS 13.5 or later.
+Applies to **1.14 (build 14)**; requires macOS 13.5 or later.
 
 ## What It Is
 `P5Window` is the full dashboard app for detailed health checks and volume analysis.
@@ -26,11 +26,11 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 - **Licence** (shown after Jukeboxes, if available): collapsible section (click triangle to expand). Resources grouped by urgency — depleted (red "None"), low (orange count), normal (green count), unlimited (single "Unlimited" row). Header shows badge counts for depleted and low resources so you can spot issues without opening the section.
 - **Archive LTO inventory** (shown after Licence):
   - One permanent card replaces the former outer Volumes disclosure and duplicate legacy blocks.
-  - **All**, **Appendable**, **Full**, **Read Only**, and **Loaded to Remove** pills show counts and filter the individual Archive + TAPE rows.
-  - Each row can show ID/barcode/label, mode, online/enabled state, location, capacity, last use, and jukebox membership when returned by P5.
-  - **Loaded to Remove** means Full or Read Only media that P5 reports as loaded in a jukebox; it is an operator review list, not an automated eject instruction.
+  - **All**, **Appendable**, **Full**, **Read Only**, and **Removal Candidates** pills show counts and filter the individual Archive + TAPE rows.
+  - Each row can show ID/barcode/label, mode, placement, online/enabled state, capacity, last use, and jukebox membership when returned by P5.
+  - **Removal Candidates** means Full or Read Only media currently **In Drive** (an exact Location-to-device match) or **In Jukebox**. Read Only candidates are **Ready to Remove**; Full candidates are **Mark Read Only First**. Offline media is excluded; incomplete evidence is **Unknown**.
   - **Partial** means the server did not provide complete volume-detail or jukebox-membership evidence, so counts and removal candidates may be incomplete.
-  - The view and its exports are read-only: version 1.11.0 does not change P5 volume modes.
+  - The view and its exports are read-only: this release does not change P5 volume modes.
 - **Plans** (collapsible, shown after Volumes): grouped by kind (Archive / Backup / Sync) with plan ID, description, enabled state, source/target endpoint details, and schedule rows when available.
 - **Jobs** (collapsible): combined Errors + Warnings section with live count badge in the header. Auto-opens when issues exist; can be manually collapsed at any time.
 - **Multi-server summary**: drive status + warning/error counts per server (shown when more than one server is configured).
@@ -77,6 +77,9 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
    - **All Job Results / Error Job Results / Warning Job Results** — job-result CSV exports
 7. Click `Settings` at the bottom of the sidebar to adjust Data Fetch, Auto Refresh, and History retention.
    - Connectivity uptime checks use presets (`15 min`, `1 hour`, `1 day`) or a custom minute interval.
+
+## Demo Mode
+Turn on **Demo Mode** in the server editor (Add Server, or Edit) to answer from a built-in scenario — **Healthy Fleet**, **Drive Needs Cleaning**, **Busy Archive Week**, or **Index Discovery** — instead of a real P5 install. No host, credentials, or network connection needed; the editor suggests a name with a shuffle button for another. Demo Mode covers jobs, drives, Archive LTO, licence resources, and archive plans, so the same views behave the same as against a real server. This is separate from, and does not replace, the iPhone app's own demo mode used for App Store review.
 
 ## JSON Import & Export
 

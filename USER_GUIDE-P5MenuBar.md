@@ -1,6 +1,6 @@
 # User Guide - P5MenuBar
 
-Applies to **1.11.0 (build 11)**; requires macOS 14 or later. <!-- claim-check: allow -->
+Applies to **1.14 (build 14)**; requires macOS 14 or later. <!-- claim-check: allow -->
 
 ## What It Is
 `P5MenuBar` is the compact monitoring app that runs in the macOS menu bar. It provides a fast, always-available health snapshot for one or more P5 servers without needing to open a full window.
@@ -35,7 +35,7 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 - Licence warnings when any resource is depleted or low.
 - Each server shows its uptime in colour: green up to 24 hours, orange up to 48 hours, red beyond, with how long ago it was read (from the last inventory or reachability check).
 - The footer shows the app version and build in light grey.
-- Buttons: `Refresh All`, `Settings`.
+- Buttons: `Refresh All`, `Settings`, `Help`.
 - Footer actions: `Open Main App` (opens `P5Window`) and `Quit`.
 - Menu bar icon flashes red when any configured server reports a cleaning-required drive.
 
@@ -48,6 +48,7 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 6. If you have more than 3 servers, choose `Detailed` or `Grid` in `Server Reports`.
 7. Review server groups and status pills.
 8. Use `Open Main App` in the popover footer to jump directly to the full `P5Window` app when you need deeper analysis.
+9. Click `Help` for the in-app guide — the same one shown from the window app's Help menu.
 
 ## JSON Import & Export
 
@@ -85,6 +86,7 @@ The Settings window is organised into two sections:
 - Action buttons (second row): `Import JSON`, `Export JSON`.
 - `Edit` opens the selected server immediately with fields prefilled (v1.3 fix for first-click empty editor timing issue).
 - Server editor fields: Alias, Host / IP Address, Port, Username, Password (with show/hide toggle), API version, HTTPS toggle.
+- A **Demo Mode** toggle answers from a built-in scenario (Healthy Fleet, Drive Needs Cleaning, Busy Archive Week, Index Discovery) instead of a real P5 install — no host, credentials, or network connection needed. Unrelated to the iPhone app's own App-Store-review demo mode.
 
 **Scheduler**
 - Horizontal row of rounded boxes:

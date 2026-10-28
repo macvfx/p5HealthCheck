@@ -1,8 +1,29 @@
-# What's New — P5 Health Check v1.0 to v1.11.0
+# What's New — P5 Health Check v1.0 to v1.14
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.11.0 and iPhone v1.2.1.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.14 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.12–v1.14 (Mac) — 2026-10-28
+
+### Demo Mode
+
+- Add Server on both Mac apps offers a **Demo Mode** toggle: answer from a built-in scenario — Healthy Fleet, Drive Needs Cleaning, Busy Archive Week, or Index Discovery — instead of a real P5 install, with no host, credentials, or network connection needed.
+- Covers jobs, drives, Archive LTO, licence resources, and archive plans. Separate from, and not a replacement for, the iPhone app's own App-Store-review demo mode.
+
+### Menu bar Help
+
+- The menu bar app's popover gains a Help button next to Settings, showing the same guide as the window app's Help menu. The menu bar app previously had no in-app help at all.
+
+### Corrected removal candidates
+
+- **Removal Candidates** (renamed from Loaded to Remove) now means Full or Read Only Archive LTO currently **In Drive** (an exact Location-to-device match) or **In Jukebox**. Read Only candidates are Ready to Remove; Full candidates are Mark Read Only First. Offline tapes are excluded.
+- Archive LTO CSV exports include Placement and Removal Readiness columns.
+- Successful exports show a brief non-blocking confirmation instead of a modal OK dialog.
+
+The iPhone app is not part of this release.
 
 ---
 
