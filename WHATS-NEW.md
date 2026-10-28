@@ -1,8 +1,18 @@
-# What's New — P5 Health Check v1.0 to v1.14
+# What's New — P5 Health Check v1.0 to v1.15
 
-A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.14 and iPhone v1.2.1.
+A highlight reel of the most visible changes across **P5Window**, **P5MenuBar**, **P5iPhone**, and the **CLI** — from the v1.0 public release through Mac v1.15 and iPhone v1.2.1.
 
 For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
+
+---
+
+## v1.15 (Mac) — 2026-10-28
+
+### Last-known inventory for an unreachable server
+
+- Licence resources, configured plans, volumes, and jukeboxes are now cached to disk after every successful full refresh and restored on launch.
+- A server that's currently unreachable — or hasn't answered yet this session — shows that last-known inventory in Media & Drives, Plans, and Licenses instead of nothing, labelled "Showing inventory as of …" until a live refresh succeeds.
+- Jobs and drive state are deliberately excluded: they change too often for a stale value to be anything but misleading, so those stay live-only.
 
 ---
 

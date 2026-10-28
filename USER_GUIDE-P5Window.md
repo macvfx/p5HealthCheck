@@ -1,6 +1,6 @@
 # User Guide - P5Window
 
-Applies to **1.14 (build 14)**; requires macOS 13.5 or later.
+Applies to **1.15 (build 15)**; requires macOS 13.5 or later.
 
 ## What It Is
 `P5Window` is the full dashboard app for detailed health checks and volume analysis.
@@ -80,6 +80,9 @@ Both tools share the same `P5Servers.json` config format and Keychain password s
 
 ## Demo Mode
 Turn on **Demo Mode** in the server editor (Add Server, or Edit) to answer from a built-in scenario — **Healthy Fleet**, **Drive Needs Cleaning**, **Busy Archive Week**, or **Index Discovery** — instead of a real P5 install. No host, credentials, or network connection needed; the editor suggests a name with a shuffle button for another. Demo Mode covers jobs, drives, Archive LTO, licence resources, and archive plans, so the same views behave the same as against a real server. This is separate from, and does not replace, the iPhone app's own demo mode used for App Store review.
+
+## Inventory for an unreachable server
+Licence resources, configured plans, volumes, and jukeboxes are cached on disk after every successful full refresh. If a server is currently unreachable — or just hasn't answered yet this session — Media & Drives, Plans, and Licenses show that last-known inventory instead of nothing, with a "Showing inventory as of …" notice above the section. The notice clears as soon as a refresh for that server succeeds. Jobs and drive state are never shown this way: they stay live-only, and show nothing until the server answers again.
 
 ## JSON Import & Export
 

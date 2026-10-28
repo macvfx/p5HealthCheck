@@ -1,6 +1,6 @@
 # P5 Health Check Overview
 
-**Current Mac release:** P5Window and P5MenuBar v1.14 (build 14)
+**Current Mac release:** P5Window and P5MenuBar v1.15 (build 15)
 
 ## Purpose
 P5 Health Check provides quick operational visibility into one or more Archiware P5 servers via the P5 REST API.
@@ -34,6 +34,7 @@ Key features:
 - **Drive cleaning log** (Media & Drives): every change to a drive's needs-cleaning flag is recorded, manual cleanings are logged with the cleaning tape used, and the outcome is worked out from the flag afterwards. Per-drive totals, cleaning tape wear counts, a frequent-cleaning warning, charts over time, and a text or CSV export are included. Cleaning cartridges, current cycle baselines, rated maximums, and retired state are kept per P5 server/site.
 - **Archive LTO inventory:** one card shows All, Appendable, Full, Read Only, and Removal Candidates pills. A removal candidate is a Full or Read Only tape currently in a jukebox or in a drive (an exact Location match); Read Only candidates are ready to remove, Full candidates must be marked Read Only first, and offline media is excluded. Clicking a pill filters individual Archive + TAPE rows with barcode/label, mode, placement, online/enabled state, capacity, last use, and jukebox membership when P5 supplies it. A **Partial** marker makes incomplete endpoint coverage explicit.
 - **Demo Mode:** flag a server as a demo server in Add Server to answer from a built-in scenario — Healthy Fleet, Drive Needs Cleaning, Busy Archive Week, or Index Discovery — instead of a real P5 install, with no host, credentials, or network connection needed. Separate from, and not a replacement for, the iPhone app's own demo mode used for App Store review.
+- **Inventory for an unreachable server:** licence resources, configured plans, volumes, and jukeboxes are cached after every successful full refresh and restored on launch. A server that's currently unreachable shows that last-known inventory in Media & Drives, Plans, and Licenses instead of nothing, labelled with when it was captured, until a live refresh succeeds. Jobs and drive state are never shown this way — they stay live-only.
 - Export menu options:
   - volume CSV export (All Volumes / Archive Tape Usage / Backup Tape Usage)
   - operator-focused Archive LTO export (current filter / removal candidates / appendable inventory)
