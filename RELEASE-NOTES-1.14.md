@@ -18,6 +18,6 @@ Released 2026-10-28 for P5Window and P5MenuBar. The iPhone app stays at 1.2.1 (3
 - Archive LTO CSV exports include Placement and Removal Readiness columns.
 - Successful exports show a brief non-blocking confirmation instead of a modal OK dialog. Export failures still open an alert.
 
-## Requirements and testing
+## Requirements
 
 Both DMGs contain universal Apple silicon and Intel apps, signed with a Developer ID, notarized and stapled. The window app needs macOS 13.5 or later; the menu bar app needs macOS 14 or later. <!-- claim-check: allow -->
