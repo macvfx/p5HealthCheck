@@ -11,5 +11,3 @@ Released 2026-10-28 for P5Window and P5MenuBar. The iPhone app stays at 1.2.1 (3
 ## Requirements and testing
 
 Both DMGs contain universal Apple silicon and Intel apps, signed with a Developer ID, notarized and stapled. The window app needs macOS 13.5 or later; the menu bar app needs macOS 14 or later. <!-- claim-check: allow -->
-
-Core, dependency, REST-probe, TLS-loopback, documentation, and Debug/Release build gates passed. Live-P5 GUI acceptance and real-site operator confirmation remain separate from automated release verification.
