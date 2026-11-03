@@ -6,7 +6,11 @@ For full build-by-build history, see `CHANGELOG-P5-Health-Check.md`.
 
 ---
 
-## v1.15 (Mac) — 2026-10-28
+## v1.15 (Mac) — 2026-11-02
+
+### Fixed — Demo Mode server info
+
+- A demo server added through the server editor's Demo Mode now reports Hostname, Platform, and Uptime on its overview cards, instead of staying blank no matter how many refreshes.
 
 ### Last-known inventory for an unreachable server
 

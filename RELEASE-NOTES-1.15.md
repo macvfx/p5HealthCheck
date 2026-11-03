@@ -1,6 +1,10 @@
-# P5 Health Check 1.15 (Build 15)
+# P5 Health Check 1.15 (Build 16)
 
-Released 2026-10-28 for P5Window and P5MenuBar. The iPhone app stays at 1.2.1 (3) and is not part of this release.
+Released 2026-11-02 for P5Window and P5MenuBar. The iPhone app stays at 1.2.1 (3) and is not part of this release.
+
+## Fixed — Demo Mode server info
+
+- A demo server added through the server editor's Demo Mode now reports Hostname, Platform, and Uptime on its overview cards. They previously stayed blank no matter how many times the app refreshed.
 
 ## Last-known inventory for an unreachable server
 
